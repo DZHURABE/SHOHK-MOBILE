@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="uz-Cyrl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHOHK MOBILE</title>
+<meta name="theme-color" content="#061131">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040a1c;--panel:#0a1634;--panel2:#0d1d44;--line:rgba(70,140,255,.32);--line2:rgba(70,140,255,.18);
+  --ink:#eaf2ff;--mute:#8fa6cf;--cyan:#38c8ff;--blue:#1f6fff;--green:#22d36b;--red:#ff3b4f;--gold:#f5b83a;--purple:#8b4dff;
+  --glow:0 0 0 1px var(--line),0 0 18px rgba(31,111,255,.22) inset;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:15px/1.35 Rubik,system-ui,sans-serif;color:var(--ink);background:
+ radial-gradient(1200px 500px at 50% -120px,rgba(31,111,255,.35),transparent 70%),
+ radial-gradient(800px 600px at 100% 100%,rgba(139,77,255,.15),transparent 70%),
+ linear-gradient(180deg,#061131,#030817 60%);background-color:#030817;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- layout ---------- */
+.app{display:grid;grid-template-columns:270px 1fr;grid-template-rows:auto 1fr auto;min-height:100vh}
+.top{grid-column:1/3;display:flex;align-items:center;gap:16px;padding:8px 18px;border-bottom:1px solid var(--line2);background:linear-gradient(180deg,rgba(6,18,50,.9),rgba(4,10,28,.6))}
+.app-name{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.3px;min-width:250px}
+.app-name small{color:var(--mute);font-weight:500}
+.logo{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 0}
+.logo .word{font-weight:900;font-style:italic;font-size:44px;line-height:1;letter-spacing:1px;display:flex;align-items:center;gap:10px;text-transform:uppercase}
+.logo .w1{color:#fff;text-shadow:0 0 18px rgba(120,180,255,.6)}
+.logo .w2{background:linear-gradient(180deg,#7fe3ff,#1aa3ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(56,200,255,.5))}
+.logo .sub{margin-top:4px;font-weight:600;font-size:15px;letter-spacing:1.5px;color:#dbe8ff}
+.logo .sub b{color:var(--cyan);margin:0 8px}
+.phone-logo{width:54px;height:54px;filter:drop-shadow(0 0 10px var(--cyan))}
+.clock{display:flex;gap:0;border:1px solid var(--line);border-radius:12px;background:rgba(6,16,44,.8);overflow:hidden}
+.clock div{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.clock div+div{border-left:1px solid var(--line2)}
+.clock .t{font-size:30px;font-weight:600}
+.clock .d{font-weight:600;font-size:17px}.clock .d small{display:block;font-weight:400;color:var(--mute);font-size:14px}
+.bell{position:relative;background:none;border:0;padding:6px}
+.bell em{position:absolute;top:0;right:-2px;background:var(--red);color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:10px;min-width:18px;height:18px;display:grid;place-items:center}
+.admin{display:flex;align-items:center;gap:6px;color:#dbe8ff}
+
+.side{padding:14px 10px;border-right:1px solid var(--line2);background:linear-gradient(180deg,rgba(8,20,54,.7),rgba(4,10,28,.4));display:flex;flex-direction:column}
+.side button{white-space:nowrap;display:flex;align-items:center;gap:14px;width:100%;background:none;border:0;border-bottom:1px solid var(--line2);padding:12px 14px;font-size:17px;text-align:left;color:#dbe8ff;border-radius:0}
+.side button svg.i{width:26px;height:26px}
+.side button.on{background:linear-gradient(90deg,#1f6fff,#1a55d6);border-radius:10px;border-color:transparent;box-shadow:0 0 16px rgba(31,111,255,.55);color:#fff}
+.side .promo{margin-top:auto;padding:16px 10px;text-align:right;font-weight:600;font-size:19px;line-height:1.35;color:#e6efff;position:relative}
+.side .promo svg{position:absolute;left:4px;bottom:20px;width:120px;height:120px;filter:drop-shadow(0 0 14px rgba(139,77,255,.8))}
+.side .badge{margin-left:auto;background:var(--red);color:#fff;font-size:12px;border-radius:10px;padding:1px 7px}
+
+main{padding:14px;min-width:0}
+.foot{grid-column:1/3;display:flex;align-items:center;gap:0;border-top:1px solid var(--line2);background:rgba(4,10,28,.9);font-size:15px}
+.foot div{display:flex;align-items:center;gap:10px;padding:10px 22px;border-right:1px solid var(--line2)}
+.foot div:first-child{font-weight:700;letter-spacing:.5px}
+.foot div:last-child{margin-left:auto;border:0}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.dot.off{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+
+/* ---------- stat cards ---------- */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:14px}
+.sc{display:flex;align-items:center;gap:16px;border-radius:12px;padding:14px 18px;min-height:92px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.18)}
+.sc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 50%);pointer-events:none}
+.sc svg.i{width:52px;height:52px;stroke-width:1.6}
+.sc .k{font-size:16px;opacity:.95}.sc .v{font-size:24px;font-weight:700;white-space:nowrap}.sc .s{font-size:13px;opacity:.9}
+.sc .up{color:#6dffa8}.sc .dn{color:#ffb3bb}
+.c1{background:linear-gradient(135deg,#0d3fa8,#0a2a78);box-shadow:0 0 18px rgba(31,111,255,.45)}
+.c2{background:linear-gradient(135deg,#0c7a3c,#075029);box-shadow:0 0 18px rgba(34,211,107,.35)}
+.c3{background:linear-gradient(135deg,#5b27c9,#3a1690);box-shadow:0 0 18px rgba(139,77,255,.45)}
+.c4{background:linear-gradient(135deg,#a86a08,#6e4304);box-shadow:0 0 18px rgba(245,184,58,.4)}
+.c5{background:linear-gradient(135deg,#b81f33,#7a0f1e);box-shadow:0 0 18px rgba(255,59,79,.4)}
+.c4 svg.i{color:#ffd36b}.c1 svg.i{color:#7fd3ff}.c2 svg.i{color:#7dffb0}
+
+/* ---------- panels ---------- */
+.pn{background:linear-gradient(180deg,rgba(13,30,72,.85),rgba(8,20,52,.85));border:1px solid var(--line);border-radius:12px;box-shadow:0 0 20px rgba(31,111,255,.12) inset;padding:12px;min-width:0}
+.pn>h2{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:19px;font-weight:600}
+.pn>h2 small{font-weight:400;color:var(--mute);font-size:15px}
+.pn>h2 .r{margin-left:auto}
+.g-pos{display:grid;grid-template-columns:1.45fr 1fr;gap:14px;margin-bottom:14px}
+.g-bot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.srch{display:flex;gap:8px;margin-bottom:10px}
+.srch label{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:rgba(3,10,30,.7)}
+.srch input{flex:1;background:none;border:0;outline:0;color:var(--ink);font:inherit;padding:10px 0;min-width:0}
+.ibtn{border:1px solid var(--line);background:rgba(3,10,30,.7);border-radius:10px;width:46px;display:grid;place-items:center}
+.cats{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:10px}
+.cat{border:1px solid var(--line);background:rgba(3,10,30,.6);border-radius:10px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;color:#cfe0ff}
+.cat.on{background:linear-gradient(180deg,#2a7cff,#1452d6);border-color:#4c95ff;color:#fff;box-shadow:0 0 14px rgba(31,111,255,.6)}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;max-height:330px;overflow:auto;padding-right:2px}
+.tile{position:relative;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,rgba(20,44,100,.7),rgba(6,16,44,.9));padding:8px 8px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;min-height:126px}
+.tile .pic{height:56px;display:grid;place-items:center}
+.tile .pic svg{width:50px;height:50px}
+.tile .pic img{width:64px;height:56px;object-fit:contain;border-radius:6px}
+.thumb{width:38px;height:38px;border-radius:7px;object-fit:cover;display:block;background:#061230}
+.thumb.svg{display:grid;place-items:center}.thumb.svg svg{width:30px;height:30px}
+.phbox{display:flex;align-items:center;gap:12px;margin-top:6px}.phbox .pv{width:96px;height:96px;border-radius:12px;border:1px dashed var(--line);display:grid;place-items:center;overflow:hidden;background:#061230;flex:none}.phbox .pv img{width:100%;height:100%;object-fit:cover}.phbox .pv svg{width:60px;height:60px}
+.upl{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center}.upl input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.catph{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.catph>div{text-align:center;font-size:13px}.catph .pv{width:100%;aspect-ratio:1;border-radius:10px;border:1px dashed var(--line);display:grid;place-items:center;overflow:hidden;background:#061230;margin-bottom:4px;position:relative}.catph .pv img{width:100%;height:100%;object-fit:cover}.catph .pv svg{width:60%;height:60%}
+.tile .nm{font-weight:600;font-size:14px;line-height:1.15;margin-top:4px}
+.tile .md{font-size:12px;color:#b9cbef;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tile .ft{margin-top:auto;display:flex;align-items:center;justify-content:space-between;width:100%;padding-top:4px}
+.tile .pr{font-weight:700;font-size:14px}
+.tile .q{position:absolute;top:6px;left:6px;font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px;background:rgba(34,211,107,.2);color:#7dffb0}
+.tile .q.low{background:rgba(255,59,79,.25);color:#ff9aa5}
+.tile.out{opacity:.45}
+.plus{width:26px;height:26px;border-radius:6px;border:0;background:var(--green);color:#fff;font-size:20px;font-weight:700;line-height:1;display:grid;place-items:center;box-shadow:0 0 8px rgba(34,211,107,.6)}
+
+table{width:100%;border-collapse:collapse}
+th{font-weight:600;color:#dbe8ff;font-size:14px;padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;background:rgba(31,111,255,.08)}
+td{padding:7px 6px;border-bottom:1px solid var(--line2);font-size:15px}
+.n{text-align:right;font-variant-numeric:tabular-nums}.c{text-align:center}
+.stp{display:inline-flex;align-items:center;gap:4px}
+.stp button{width:28px;height:26px;border-radius:5px;border:1px solid #4c7fd6;background:#1a3a7a;font-size:18px;line-height:1}
+.stp input{width:38px;text-align:center;background:#071433;border:1px solid var(--line);border-radius:5px;color:var(--ink);padding:3px 0;font:inherit}
+.del{background:none;border:0;color:var(--red);padding:2px}
+.cart-wrap{min-height:160px;max-height:240px;overflow:auto}
+.sum{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:10px}
+.sumbox{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:rgba(3,10,30,.5)}
+.sumbox .r{display:flex;justify-content:space-between;gap:10px;padding:3px 0;color:#cfe0ff}
+.sumbox .r b{color:#fff}
+.sumbox .tot{border-top:1px solid var(--line2);margin-top:6px;padding-top:8px;font-size:20px;font-weight:700;color:#fff}
+.sumbox .tot b{color:var(--green);font-size:26px;text-shadow:0 0 10px rgba(34,211,107,.5)}
+.disc{display:inline-flex;align-items:center;gap:6px}
+.disc input{width:90px;background:#071433;border:1px solid var(--line);border-radius:6px;color:#fff;padding:3px 6px;font:inherit;text-align:right}
+.pays{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;align-content:start}
+.pay{border:1px solid var(--line);border-radius:10px;background:#11306e;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px;min-width:84px}
+.pay.on{box-shadow:0 0 0 2px #fff,0 0 14px rgba(255,255,255,.4)}
+.pay.p0{background:linear-gradient(180deg,#14a755,#0b7a3c)}.pay.p1{background:linear-gradient(180deg,#2a7cff,#1452d6)}.pay.p2{background:linear-gradient(180deg,#2563eb,#173f9e)}.pay.p3{background:linear-gradient(180deg,#d9343f,#8f1420)}
+.acts{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-top:12px}
+.big{border:0;border-radius:10px;padding:14px 10px;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px}
+.big.ok{background:linear-gradient(180deg,#22c463,#118a43);box-shadow:0 0 18px rgba(34,211,107,.5)}
+.big.no{background:linear-gradient(180deg,#e2343f,#a3121f);box-shadow:0 0 14px rgba(255,59,79,.4)}
+.big:disabled{opacity:.45;box-shadow:none}
+
+.bars{display:flex;align-items:flex-end;gap:14px;height:170px;padding:0 6px 0 44px;position:relative;border-left:1px solid var(--line2);margin-left:0}
+.bars .yl{position:absolute;left:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;font-size:12px;color:#cfe0ff;width:40px;text-align:right}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.bar i{display:block;width:100%;max-width:38px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#5a8dff,#2348d8);box-shadow:0 0 10px rgba(31,111,255,.5);min-height:2px}
+.bar.today i{background:linear-gradient(180deg,#3cf08a,#0fa84e);box-shadow:0 0 12px rgba(34,211,107,.6)}
+.bar span{font-size:12px;color:#cfe0ff}
+.xl{display:flex;gap:14px;padding:4px 6px 0 44px}.xl span{flex:1;text-align:center;font-size:12px;color:#cfe0ff}
+.top3 .it{display:flex;align-items:center;gap:14px;padding:9px 6px;border-bottom:1px solid var(--line2);font-size:17px}
+.medal{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#3a2600;flex:none}
+.m1{background:radial-gradient(circle at 35% 30%,#ffe27a,#d99a08)}.m2{background:radial-gradient(circle at 35% 30%,#f2f5ff,#9aa6c2)}.m3{background:radial-gradient(circle at 35% 30%,#ffc28a,#c26716)}.m4{background:#2a3d6e;color:#cfe0ff}
+.top3 .it b{margin-left:auto;font-weight:600}
+.donut{display:flex;align-items:center;gap:22px;padding:6px}
+.ring{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;flex:none}
+.ring div{width:104px;height:104px;border-radius:50%;background:#0a1838;display:grid;place-items:center;text-align:center;font-size:15px}
+.ring b{display:block;font-size:34px}
+.leg div{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:16px}
+.leg i{width:14px;height:14px;border-radius:3px;display:inline-block}
+
+/* ---------- lists / forms ---------- */
+.list .row{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--line2)}
+.grow{flex:1;min-width:0}
+.mute{color:var(--mute);font-size:14px}
+.tt{font-weight:600}
+.btn{border:1px solid #4c95ff;background:linear-gradient(180deg,#2a7cff,#1452d6);border-radius:9px;padding:9px 14px;font-weight:600;color:#fff;box-shadow:0 0 10px rgba(31,111,255,.4)}
+.btn.g{border-color:#3cf08a;background:linear-gradient(180deg,#22c463,#118a43);box-shadow:0 0 10px rgba(34,211,107,.4)}
+.btn.r{border-color:#ff6b78;background:linear-gradient(180deg,#e2343f,#a3121f);box-shadow:none}
+.btn.o{background:rgba(3,10,30,.6);border-color:var(--line);box-shadow:none}
+.btn.sm{padding:5px 10px;font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1px solid var(--line);background:rgba(3,10,30,.6);border-radius:20px;padding:6px 14px;font-size:14px;color:#cfe0ff}
+.chip.on{background:linear-gradient(180deg,#2a7cff,#1452d6);color:#fff;border-color:#4c95ff}
+.pill{font-size:12px;font-weight:700;border-radius:8px;padding:3px 9px;white-space:nowrap}
+.s0{background:rgba(160,175,210,.2);color:#cfd8ef}.s1{background:rgba(245,140,40,.2);color:#ffb35a}.s2{background:rgba(34,211,107,.2);color:#6dffa8}.s3{background:rgba(31,111,255,.2);color:#8fc0ff}
+.qb{display:inline-block;min-width:40px;text-align:center;border-radius:7px;padding:3px 8px;font-weight:700;background:rgba(34,211,107,.18);color:#6dffa8}
+.qb.low{background:rgba(255,59,79,.22);color:#ff9aa5}.qb.mid{background:rgba(245,184,58,.2);color:#ffd36b}
+.alert{background:rgba(255,59,79,.15);border:1px solid rgba(255,59,79,.5);color:#ffb3bb;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-weight:600;cursor:pointer}
+.note{background:rgba(245,184,58,.12);border:1px solid rgba(245,184,58,.4);color:#ffd99a;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:14px}
+.empty{text-align:center;color:var(--mute);padding:28px 10px}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.kv .pn .k{color:var(--mute);font-size:14px}.kv .pn .v{font-size:22px;font-weight:700;margin-top:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.f{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+.fi{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#061230;color:var(--ink);outline:0}
+.fi:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,200,255,.15)}
+select.fi option{background:#061230}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#modal{position:fixed;inset:0;background:rgba(0,4,16,.7);backdrop-filter:blur(3px);z-index:50;display:none;align-items:center;justify-content:center;padding:14px}
+#modal.open{display:flex}
+#sheet{width:100%;max-width:540px;max-height:92vh;overflow:auto;background:linear-gradient(180deg,#0f2255,#091636);border:1px solid #3f7fff;border-radius:14px;box-shadow:0 0 40px rgba(31,111,255,.4);padding:18px}
+#sheet h2{margin:0 0 6px;font-size:20px}
+.mact{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}.mact .btn{flex:1}
+#toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#0f2a66;border:1px solid #4c95ff;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none;box-shadow:0 0 18px rgba(31,111,255,.5)}
+#toast.show{opacity:1}
+.mnav{display:none}
+.cbar{display:none;position:fixed;left:10px;right:10px;bottom:76px;z-index:39;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-radius:12px;border:0;background:linear-gradient(180deg,#22c463,#118a43);box-shadow:0 0 18px rgba(34,211,107,.55);font-weight:600;font-size:16px;color:#fff}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1d3a7a;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+
+/* model picker */
+.mp .mpb{display:flex;gap:6px;overflow-x:auto;padding:8px 0 4px;scrollbar-width:none}.mp .mpb .chip{padding:4px 11px;font-size:13px;flex:none}
+.mps{display:flex;flex-wrap:wrap;gap:6px;max-height:190px;overflow:auto}.mps:empty{display:none}
+.mpo{border:1px solid var(--line);background:#0b1d48;border-radius:8px;padding:6px 10px;font-size:13px;color:#dbe8ff;transition:.15s}
+.mpo:hover{border-color:var(--cyan);color:#fff}.mpo.on{background:linear-gradient(180deg,#22c463,#118a43);border-color:#3cf08a;color:#fff}
+.mpgrid{display:flex;flex-wrap:wrap;gap:6px;max-height:260px;overflow:auto;padding:2px}
+.g-bot2{grid-template-columns:1fr 1fr;margin-top:14px}
+.lowg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lowi{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,59,79,.35);background:rgba(255,59,79,.06);border-radius:10px;padding:6px 10px;cursor:pointer;transition:.15s}.lowi:hover{background:rgba(255,59,79,.14)}
+.lowi .lpic{width:38px;height:38px;display:grid;place-items:center;flex:none}.lowi .lpic svg,.lowi .lpic img{width:36px;height:36px;object-fit:contain;border-radius:6px}.lowi b{display:block;font-size:14px}.lowi .mute{font-size:12px}
+/* motion & polish */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(70,140,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(70,140,255,.05) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%)}
+body::after{content:"";position:fixed;width:520px;height:520px;left:-160px;top:30%;border-radius:50%;background:radial-gradient(circle,rgba(56,200,255,.14),transparent 65%);pointer-events:none;z-index:-1;animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(70vw,-20vh)}}
+.logo .w2{background-size:200% 100%;background-image:linear-gradient(100deg,#1aa3ff 20%,#bff4ff 40%,#1aa3ff 60%);animation:shine 5s linear infinite}
+@keyframes shine{from{background-position:200% 0}to{background-position:-200% 0}}
+.sc{transition:transform .18s,box-shadow .18s;cursor:pointer}.sc:hover{transform:translateY(-3px)}
+.tile{transition:transform .15s,border-color .15s,box-shadow .15s;cursor:pointer}.tile:hover{transform:translateY(-3px);border-color:#5aa0ff;box-shadow:0 0 16px rgba(31,111,255,.45)}.tile:active{transform:scale(.97)}
+.plus{transition:transform .12s}.plus:active{transform:scale(.85)}
+.side button{transition:background .15s}.side button:not(.on):hover{background:rgba(31,111,255,.12)}
+#page{animation:fadeup .25s ease}@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.dot{animation:pulse 2s infinite}@keyframes pulse{50%{opacity:.45}}
+.btn{transition:filter .15s,transform .1s}.btn:hover{filter:brightness(1.12)}.btn:active{transform:scale(.97)}
+/* ---------- responsive ---------- */
+@media (max-width:1400px){.stats{grid-template-columns:repeat(5,1fr);gap:10px}.sc{padding:12px;gap:10px}.sc svg.i{width:40px;height:40px}.sc .v{font-size:20px}.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.logo .word{font-size:36px}}
+@media (max-width:1150px){.app{grid-template-columns:1fr}.side{display:none}.top,.foot{grid-column:1}.g-pos{grid-template-columns:1fr}.g-bot{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(3,1fr)}
+ .mnav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(5,12,34,.97);border-top:1px solid var(--line);overflow-x:auto}
+ .mnav button{flex:1 0 auto;min-width:72px;background:none;border:0;padding:8px 4px 10px;font-size:11px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:3px}
+ .mnav button.on{color:#fff}.mnav button.on svg{color:var(--cyan);filter:drop-shadow(0 0 6px var(--cyan))}
+ .foot{display:none}body{padding-bottom:70px}.app-name{min-width:0}.clock .t{font-size:22px}.clock div{padding:8px 10px}}
+@media (max-width:760px){
+ .top{flex-wrap:wrap;gap:8px;padding:8px 10px}.app-name{order:1;font-size:14px;flex:1}.app-name small,.admin span{display:none}.bell{order:2}.admin{order:3}
+ .logo{order:4;flex-basis:100%}.logo .word{font-size:28px;gap:6px}.phone-logo{width:36px;height:36px}.logo .sub{font-size:11px;letter-spacing:.5px}.logo .sub b{margin:0 4px}
+ .clock{order:5;flex-basis:100%;justify-content:center}.clock div{flex:1;justify-content:center}.clock .t{font-size:20px}.clock .d{font-size:14px}
+ main{padding:10px}
+ .stats{grid-template-columns:1fr 1fr;gap:8px}.sc{min-height:76px;padding:10px;gap:8px}.sc svg.i{width:32px;height:32px}.sc .k{font-size:13px}.sc .v{font-size:17px}.sc .s{font-size:11px}
+ .stats .sc:last-child{grid-column:1/3}
+ .cats{grid-template-columns:repeat(4,1fr)}.tiles{grid-template-columns:repeat(3,minmax(0,1fr));max-height:none}.tile{min-height:118px;padding:6px}.tile .pic svg{width:40px;height:40px}.tile .pic{height:44px}
+ .tile .pr{font-size:12px}.plus{width:22px;height:22px;font-size:17px}.tile .ft{gap:2px}
+ .cbar{display:flex}
+ .g-bot,.g2,.g-bot2,.lowg{grid-template-columns:1fr}.kv{grid-template-columns:1fr 1fr}
+ .sum{grid-template-columns:1fr}.pays{grid-template-columns:repeat(4,1fr)}.pay{min-width:0;font-size:13px;padding:8px 2px}
+ .acts{grid-template-columns:1fr 1fr}.big{font-size:15px;padding:12px 6px}
+ td,th{font-size:13px;padding:6px 3px}.stp button{width:24px}.stp input{width:30px}
+ .bars{gap:6px;height:140px}.xl{gap:6px}
+ #modal{align-items:flex-end;padding:0}#sheet{border-radius:16px 16px 0 0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="app-name"><span id="brandSmall">SHOHK MOBILE PRO</span> <small>v2.0</small></div>
+    <div class="logo">
+      <div class="word"><svg class="phone-logo" viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fe9ff"/><stop offset="1" stop-color="#1a8cff"/></linearGradient></defs><rect x="18" y="6" width="26" height="46" rx="5" transform="rotate(-18 31 29)" fill="none" stroke="url(#lg)" stroke-width="4"/><path d="M6 44c10 14 36 18 52-4" fill="none" stroke="url(#lg)" stroke-width="5" stroke-linecap="round"/><path d="M58 40l-1 9-8-4" fill="none" stroke="url(#lg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="w1" id="bw1">SHOHK</span><span class="w2" id="bw2">MOBILE</span></div>
+      <div class="sub">ТЕЛЕФОН РЕМОНТ<b>•</b>АКСЕССУАРЫ<b>•</b>ЗАПЧАСТИ</div>
+    </div>
+    <button class="btn g sm" id="instBtn" style="display:none" onclick="doInstall()">📲 Ўрнатиш</button>
+    <button class="bell" onclick="showLow()" title="Кам қолганлар"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><em id="bellN" style="display:none">0</em></button>
+    <div class="admin"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span>Админ</span></div>
+    <div class="clock"><div><svg class="i" viewBox="0 0 24 24" style="width:34px;height:34px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><span class="d" id="cDate"></span></div><div><svg class="i" viewBox="0 0 24 24" style="width:34px;height:34px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="t" id="cTime"></span></div></div>
+  </header>
+  <aside class="side" id="side"></aside>
+  <main><div class="stats" id="stats"></div><div id="page"></div></main>
+  <footer class="foot" id="foot"></footer>
+</div>
+<nav class="mnav" id="mnav"></nav>
+<button class="cbar" id="cbar" style="display:none" onclick="document.getElementById('cartPanel').scrollIntoView({behavior:'smooth'})"></button>
+<div id="modal"><div id="sheet"></div></div>
+<div id="toast"></div>
+
+<script>
+const MODELS={
+"iPhone":["iPhone 17 Pro Max","iPhone 17 Pro","iPhone 17 Air","iPhone 17","iPhone 16e","iPhone 16 Pro Max","iPhone 16 Pro","iPhone 16 Plus","iPhone 16","iPhone 15 Pro Max","iPhone 15 Pro","iPhone 15 Plus","iPhone 15","iPhone 14 Pro Max","iPhone 14 Pro","iPhone 14 Plus","iPhone 14","iPhone 13 Pro Max","iPhone 13 Pro","iPhone 13","iPhone 13 mini","iPhone 12 Pro Max","iPhone 12 Pro","iPhone 12","iPhone 12 mini","iPhone 11 Pro Max","iPhone 11 Pro","iPhone 11","iPhone XS Max","iPhone XS","iPhone XR","iPhone X","iPhone SE 2022","iPhone SE 2020","iPhone 8 Plus","iPhone 8","iPhone 7 Plus","iPhone 7","iPhone 6s Plus","iPhone 6s"],
+"Samsung":["Samsung S26 Ultra","Samsung S26+","Samsung S26","Samsung S25 Ultra","Samsung S25 Edge","Samsung S25+","Samsung S25","Samsung S25 FE","Samsung S24 Ultra","Samsung S24+","Samsung S24","Samsung S24 FE","Samsung S23 Ultra","Samsung S23+","Samsung S23","Samsung S23 FE","Samsung S22 Ultra","Samsung S22+","Samsung S22","Samsung S21 Ultra","Samsung S21+","Samsung S21","Samsung S21 FE","Samsung S20 Ultra","Samsung S20+","Samsung S20","Samsung S20 FE","Samsung S10+","Samsung S10","Samsung S10e","Samsung S9+","Samsung S9","Samsung Note 20 Ultra","Samsung Note 20","Samsung Note 10+","Samsung Note 10","Samsung Note 9",
+"Samsung A57","Samsung A37","Samsung A56","Samsung A36","Samsung A26","Samsung A17","Samsung A16","Samsung A07","Samsung A06","Samsung A55","Samsung A35","Samsung A25","Samsung A15","Samsung A05s","Samsung A05","Samsung A54","Samsung A34","Samsung A24","Samsung A14","Samsung A04s","Samsung A04","Samsung A04e","Samsung A53","Samsung A33","Samsung A23","Samsung A13","Samsung A03s","Samsung A03","Samsung A03 Core","Samsung A73","Samsung A52s","Samsung A52","Samsung A32","Samsung A22","Samsung A12","Samsung A02s","Samsung A02","Samsung A72","Samsung A71","Samsung A51","Samsung A41","Samsung A31","Samsung A21s","Samsung A11","Samsung A01","Samsung A70","Samsung A50","Samsung A30s","Samsung A30","Samsung A20s","Samsung A20","Samsung A10s","Samsung A10",
+"Samsung M55","Samsung M35","Samsung M34","Samsung M33","Samsung M15","Samsung M14","Samsung M13","Samsung M12","Samsung M31","Samsung M21",
+"Samsung Z Fold 7","Samsung Z Fold 6","Samsung Z Fold 5","Samsung Z Fold 4","Samsung Z Flip 7","Samsung Z Flip 6","Samsung Z Flip 5","Samsung Z Flip 4"],
+"Redmi":["Redmi Note 15 Pro+","Redmi Note 15 Pro","Redmi Note 15","Redmi Note 14 Pro+ 5G","Redmi Note 14 Pro 5G","Redmi Note 14 Pro","Redmi Note 14 5G","Redmi Note 14","Redmi Note 13 Pro+ 5G","Redmi Note 13 Pro 5G","Redmi Note 13 Pro","Redmi Note 13 5G","Redmi Note 13","Redmi Note 12 Pro+","Redmi Note 12 Pro 5G","Redmi Note 12 Pro","Redmi Note 12S","Redmi Note 12 5G","Redmi Note 12","Redmi Note 11 Pro+","Redmi Note 11 Pro","Redmi Note 11S","Redmi Note 11","Redmi Note 10 Pro","Redmi Note 10S","Redmi Note 10 5G","Redmi Note 10","Redmi Note 9 Pro","Redmi Note 9S","Redmi Note 9","Redmi Note 8 Pro","Redmi Note 8T","Redmi Note 8","Redmi Note 7","Redmi 15C","Redmi 15","Redmi 14C","Redmi 13C","Redmi 13","Redmi 12C","Redmi 12","Redmi 10C","Redmi 10A","Redmi 10","Redmi 9T","Redmi 9C","Redmi 9A","Redmi 9","Redmi 8A","Redmi 8","Redmi A5","Redmi A3","Redmi A2+","Redmi A2","Redmi A1","Redmi K70","Redmi K60","Redmi Turbo 4"],
+"Xiaomi":["Xiaomi 15 Ultra","Xiaomi 15 Pro","Xiaomi 15","Xiaomi 15T Pro","Xiaomi 15T","Xiaomi 14 Ultra","Xiaomi 14T Pro","Xiaomi 14T","Xiaomi 14","Xiaomi 13T Pro","Xiaomi 13T","Xiaomi 13 Lite","Xiaomi 13","Xiaomi 12T Pro","Xiaomi 12T","Xiaomi 12 Lite","Xiaomi 12","Xiaomi 11T Pro","Xiaomi 11T","Xiaomi 11 Lite 5G NE","Mi 11 Lite","Mi 11","Mi 10T Pro","Mi 10T","Mi Note 10 Lite","Mi 9T","Mi A3"],
+"Poco":["Poco F7 Ultra","Poco F7 Pro","Poco F7","Poco F6 Pro","Poco F6","Poco F5 Pro","Poco F5","Poco F4","Poco F3","Poco X7 Pro","Poco X7","Poco X6 Pro","Poco X6","Poco X5 Pro","Poco X5","Poco X4 Pro","Poco X3 Pro","Poco X3 NFC","Poco M7 Pro","Poco M7","Poco M6 Pro","Poco M6","Poco M5s","Poco M5","Poco M4 Pro","Poco M3 Pro","Poco M3","Poco C75","Poco C65","Poco C61","Poco C55","Poco C40"],
+"Realme":["Realme 15 Pro","Realme 15","Realme 14 Pro+","Realme 14 Pro","Realme 14","Realme 14x","Realme 13 Pro+","Realme 13 Pro","Realme 13","Realme 12 Pro+","Realme 12 Pro","Realme 12","Realme 11 Pro+","Realme 11 Pro","Realme 11","Realme 10 Pro+","Realme 10 Pro","Realme 10","Realme 9 Pro+","Realme 9 Pro","Realme 9","Realme 9i","Realme 8 Pro","Realme 8","Realme 8i","Realme GT 7 Pro","Realme GT 6","Realme GT Neo 6","Realme C85","Realme C75","Realme C71","Realme C67","Realme C65","Realme C63","Realme C61","Realme C55","Realme C53","Realme C51","Realme C35","Realme C33","Realme C31","Realme C30","Realme C25","Realme C21","Realme Note 60","Realme Note 50","Realme Narzo 70"],
+"Honor":["Honor 400 Pro","Honor 400","Honor 400 Lite","Honor 200 Pro","Honor 200","Honor 200 Lite","Honor 90","Honor 90 Lite","Honor X9c","Honor X9b","Honor X9a","Honor X8c","Honor X8b","Honor X8a","Honor X7c","Honor X7b","Honor X7a","Honor X6b","Honor X6a","Honor X5 Plus","Honor X5","Honor Magic 7 Pro","Honor Magic 7 Lite","Honor Magic 6 Pro","Honor Magic 6 Lite","Honor Magic 5 Lite","Honor 70","Honor 50","Honor 10X Lite","Honor 9X","Honor 8X"],
+"Huawei":["Huawei Pura 80 Pro","Huawei Pura 70 Pro","Huawei Pura 70","Huawei Mate 70","Huawei Mate 60 Pro","Huawei Nova 14","Huawei Nova 13","Huawei Nova 12","Huawei Nova 11","Huawei Nova 10","Huawei Nova Y91","Huawei Nova Y90","Huawei Nova Y72","Huawei Nova Y71","Huawei Nova Y70","Huawei Nova Y61","Huawei P60 Pro","Huawei P50 Pro","Huawei P40 Pro","Huawei P40 Lite","Huawei P30 Pro","Huawei P30 Lite","Huawei P30","Huawei Y9s","Huawei Y9 Prime","Huawei Y8p","Huawei Y7a","Huawei Y6p","Huawei Y5p"],
+"Tecno":["Tecno Camon 40 Pro","Tecno Camon 40","Tecno Camon 30 Pro","Tecno Camon 30","Tecno Camon 20 Pro","Tecno Camon 20","Tecno Camon 19","Tecno Spark 40 Pro","Tecno Spark 40","Tecno Spark 30 Pro","Tecno Spark 30","Tecno Spark 30C","Tecno Spark 20 Pro+","Tecno Spark 20 Pro","Tecno Spark 20","Tecno Spark 20C","Tecno Spark 10 Pro","Tecno Spark 10","Tecno Spark Go 2025","Tecno Spark Go 2024","Tecno Pova 7","Tecno Pova 6 Pro","Tecno Pova 6","Tecno Pova 5","Tecno Pop 9","Tecno Pop 8","Tecno Pop 7"],
+"Infinix":["Infinix Note 50 Pro","Infinix Note 50","Infinix Note 40 Pro","Infinix Note 40","Infinix Note 30 Pro","Infinix Note 30","Infinix Hot 60 Pro","Infinix Hot 60","Infinix Hot 50 Pro","Infinix Hot 50","Infinix Hot 50i","Infinix Hot 40 Pro","Infinix Hot 40","Infinix Hot 40i","Infinix Hot 30","Infinix Hot 30i","Infinix Smart 9","Infinix Smart 8","Infinix Smart 7","Infinix Zero 40","Infinix Zero 30","Infinix GT 30 Pro","Infinix GT 20 Pro"],
+"Oppo":["Oppo Reno 14","Oppo Reno 13","Oppo Reno 12","Oppo Reno 11","Oppo Reno 10","Oppo Reno 8","Oppo A5 Pro","Oppo A5","Oppo A3 Pro","Oppo A3","Oppo A3x","Oppo A98","Oppo A79","Oppo A78","Oppo A60","Oppo A58","Oppo A38","Oppo A18","Oppo A17","Oppo A57","Oppo A54","Oppo A16","Oppo Find X8"],
+"Vivo":["Vivo V50","Vivo V40","Vivo V30","Vivo V29","Vivo Y39","Vivo Y29","Vivo Y28","Vivo Y19s","Vivo Y18","Vivo Y17s","Vivo Y36","Vivo Y35","Vivo Y27","Vivo Y22","Vivo Y16","Vivo Y15s","Vivo Y03","Vivo Y02","Vivo X200"],
+"OnePlus":["OnePlus 13","OnePlus 13R","OnePlus 12","OnePlus 12R","OnePlus 11","OnePlus Nord 5","OnePlus Nord 4","OnePlus Nord CE 4","OnePlus Nord CE 3 Lite"],
+"Google":["Pixel 10 Pro XL","Pixel 10 Pro","Pixel 10","Pixel 9a","Pixel 9 Pro XL","Pixel 9 Pro","Pixel 9","Pixel 8a","Pixel 8 Pro","Pixel 8","Pixel 7a","Pixel 7 Pro","Pixel 7","Pixel 6a"],
+"Бошқа":["Nokia G42","Nokia C32","Nokia C22","ZTE Blade A75","ZTE Blade A55","ZTE Blade A35","Itel A70","Itel A60","Itel P55","Itel S24","Motorola G85","Motorola G54","Motorola E14","Nothing Phone 3a","Nothing Phone 2a","Universal (ҳамма телефонга)"]
+};
+const ALLMODELS=[].concat(...Object.values(MODELS));
+
+/* ================= icons ================= */
+const IC={
+ home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
+ cart:'<path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',
+ tools:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8V21h3.2l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/><path d="M5 3l3 3M3 5l3-3"/>',
+ box:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12L4 7.5M12 12v9"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4.3 1.5 5 4"/>',
+ debt:'<path d="M3 17h4l5 3 8-5"/><path d="M3 13l4-1 5 2"/><circle cx="15" cy="7" r="4"/><path d="M15 5v4M13.5 7h3"/>',
+ swap:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>',
+ chart:'<path d="M4 20V12M10 20V6M16 20v-9M22 20H2"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+ barcode:'<path d="M4 6v12M7 6v12M10 6v12M14 6v12M17 6v12M20 6v12"/>',
+ grid:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+ glass:'<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 9l5-5M9 14l7-7"/>',
+ case:'<rect x="6" y="2" width="12" height="20" rx="3"/><circle cx="10" cy="6" r="1.4"/>',
+ cable:'<path d="M12 3v4M9 7h6v4H9zM12 11v3c0 4-6 3-6 7"/>',
+ charger:'<path d="M9 3v4M15 3v4M7 7h10v5a5 5 0 0 1-10 0zM12 17v4"/>',
+ head:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>',
+ part:'<rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+ dots:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+ bank:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M12 8l-2 4h4l-2 4"/>',
+ coins:'<ellipse cx="9" cy="6" rx="6" ry="2.5"/><path d="M3 6v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V6"/><path d="M3 10v4c0 1.4 2.7 2.5 6 2.5"/><ellipse cx="15" cy="15" rx="6" ry="2.5"/><path d="M9 15v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/>',
+ cash:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 9v.01M18 15v.01"/>',
+ card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+ phone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+ trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
+ check:'<path d="M4 12l5 5L20 6"/>',
+ pen:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+ help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>',
+ db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+ trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4c0 3 2 5 4 5M16 6h4c0 3-2 5-4 5M12 13v4M8 21h8M9 17h6"/>',
+ store:'<path d="M3 9l2-5h14l2 5M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0zM5 13v8h14v-8M10 21v-5h4v5"/>',
+};
+function ic(n,cls){return `<svg class="i ${cls||""}" viewBox="0 0 24 24">${IC[n]||""}</svg>`}
+
+/* ---------- product pictures (coloured svg) ---------- */
+function pic(cat){
+ const g='<defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe9ff"/><stop offset="1" stop-color="#2b7bff"/></linearGradient><linearGradient id="pw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#a9b8d6"/></linearGradient><linearGradient id="pd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6a8c"/><stop offset="1" stop-color="#1c253b"/></linearGradient></defs>';
+ const m={
+  "Стекло":'<rect x="16" y="4" width="30" height="56" rx="5" transform="rotate(12 31 32)" fill="url(#pg)" opacity=".95"/><path d="M22 14l18 4M20 24l14 3" stroke="#fff" stroke-width="2" opacity=".7" transform="rotate(12 31 32)"/>',
+  "Чехол":'<rect x="18" y="4" width="28" height="56" rx="7" fill="url(#pd)" stroke="#8fa2c8" stroke-width="1.5"/><rect x="21" y="8" width="12" height="16" rx="4" fill="#0e1628" stroke="#6b7da3"/><circle cx="27" cy="13" r="2.6" fill="#2a3756"/><circle cx="27" cy="20" r="2.6" fill="#2a3756"/>',
+  "Кабель":'<path d="M12 40c0-18 40-26 40-6s-34 22-30 4 30-16 26 4" fill="none" stroke="url(#pw)" stroke-width="4" stroke-linecap="round"/><rect x="8" y="38" width="9" height="14" rx="2" fill="url(#pw)"/><rect x="46" y="40" width="9" height="13" rx="2" fill="url(#pw)"/>',
+  "Зарядка":'<rect x="12" y="20" width="36" height="32" rx="7" fill="url(#pw)"/><rect x="24" y="8" width="4" height="14" rx="1" fill="#c9d3e8"/><rect x="34" y="8" width="4" height="14" rx="1" fill="#c9d3e8"/><rect x="26" y="40" width="10" height="3" rx="1.5" fill="#8392b3"/>',
+  "Наушник":'<rect x="14" y="26" width="36" height="30" rx="12" fill="url(#pw)"/><path d="M22 10a6 6 0 0 1 6 6v14h-5V16a3 3 0 0 0-1-6zM42 10a6 6 0 0 0-6 6v14h5V16a3 3 0 0 1 1-6z" fill="#fff"/><path d="M14 38h36" stroke="#9aa9c8"/>',
+  "Деталь":'<rect x="14" y="14" width="36" height="36" rx="4" fill="#1d6e4a" stroke="#56d69a" stroke-width="2"/><rect x="24" y="24" width="16" height="16" rx="2" fill="#0d1b2e"/><path d="M20 8v6M28 8v6M36 8v6M44 8v6M20 50v6M28 50v6M36 50v6M44 50v6" stroke="#e0c070" stroke-width="2.5"/>',
+  "Power Bank":'<rect x="18" y="4" width="28" height="56" rx="6" fill="url(#pd)" stroke="#8fa2c8" stroke-width="1.5"/><path d="M33 20l-6 12h8l-6 12" fill="none" stroke="#38c8ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+  "Стикер":'<rect x="16" y="6" width="32" height="52" rx="6" fill="url(#pg)"/><path d="M48 40L32 58h10a6 6 0 0 0 6-6z" fill="#e9f3ff"/><path d="M48 40L32 58" stroke="#7aa7ff" stroke-width="1.5"/><circle cx="27" cy="20" r="5" fill="#ffd36b"/><path d="M20 38l8-8 6 6 5-4 6 5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>',
+  "Хотира карта":'<path d="M18 6h20l10 10v40a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="url(#pd)" stroke="#8fa2c8" stroke-width="1.5"/><path d="M22 6v10M27 6v10M32 6v10M37 6v8" stroke="#e0c070" stroke-width="2.5"/><text x="32" y="44" font-size="11" font-weight="700" text-anchor="middle" fill="#38c8ff" font-family="sans-serif">64GB</text>',
+  "Бошқа":'<rect x="12" y="16" width="40" height="34" rx="5" fill="url(#pg)"/><path d="M12 26h40M28 16v34" stroke="#fff" stroke-width="2" opacity=".7"/>'
+ };
+ return `<svg viewBox="0 0 64 64">${g}${m[cat]||m["Бошқа"]}</svg>`;
+}
+
+function imgOf(p){return p.img||((S.meta.catImg||{})[p.cat])||""}
+function photo(p){const u=imgOf(p);return u?`<img src="${esc(u)}" alt="">`:pic(p.cat)}
+function thumb(p){const u=imgOf(p);return u?`<img class="thumb" src="${esc(u)}" alt="">`:`<span class="thumb svg">${pic(p.cat)}</span>`}
+function resizeImg(file,max){return new Promise((res,rej)=>{if(!file)return rej();const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.72))};im.src=fr.result};fr.readAsDataURL(file)})}
+/* ---------- model picker ---------- */
+function mpick(id,val,ph){return `<div class="mp"><input class="fi" id="${id}" value="${esc(val)}" placeholder="${ph||"Модел ёзинг: Samsung, Redmi, iPhone…"}" autocomplete="off" oninput="mpSug('${id}')" onfocus="mpSug('${id}')"><div class="mpb">${Object.keys(MODELS).map(b=>`<button type="button" class="chip" onclick="mpBrand('${id}','${b}')">${b}</button>`).join("")}</div><div class="mps" id="${id}_s"></div></div>`}
+function mpBrand(id,b){const i=$(id);i.value=b==="Бошқа"?"":(b==="iPhone"?"iPhone ":b+" ");i.focus();mpSug(id,b)}
+function mpSug(id,brand){const i=$(id),box=$(id+"_s");if(!i||!box)return;const q=i.value.trim().toLowerCase();let l;
+ if(brand)l=MODELS[brand];else if(!q){box.innerHTML="";return}else{const w=q.split(/\s+/);l=ALLMODELS.filter(m=>{const x=m.toLowerCase();return w.every(t=>x.includes(t))})}
+ if(!l.length||(l.length===1&&l[0].toLowerCase()===q)){box.innerHTML="";return}
+ box.innerHTML=l.slice(0,60).map(m=>`<button type="button" class="mpo" onclick="mpSet('${id}','${m.replace(/'/g,"")}')">${esc(m)}</button>`).join("")+(l.length>60?`<span class="mute">…яна ${l.length-60} та, аниқроқ ёзинг</span>`:"")}
+function mpSet(id,m){const i=$(id);i.value=m;$(id+"_s").innerHTML="";i.dispatchEvent(new Event("change"))}
+/* ================= state ================= */
+const BASECATS=["Стекло","Чехол","Кабель","Зарядка","Наушник","Power Bank","Стикер","Хотира карта","Деталь","Бошқа"];
+let CATS=BASECATS.slice();
+const CATICON={"Стекло":"glass","Чехол":"case","Кабель":"cable","Зарядка":"charger","Наушник":"head","Power Bank":"bank","Деталь":"part","Бошқа":"dots"};
+const RST=["Кутилмоқда","Жараёнда","Тайёр","Берилди"];
+const PAYS=[["Нақд","cash"],["Карта","card"],["Ўтказма","phone"],["Қарзга","debt"]];
+const PAGES=[["home","Бош саҳифа","home"],["kassa","Савдо (Касса)","cart"],["repair","Ремонт (Сервис)","tools"],["stock","Товарлар (Омбор)","box"],["clients","Мижозлар","users"],["debts","Қарзлар","debt"],["cash","Кирим-чиқим","swap"],["report","Ҳисоботлар","chart"],["set","Созламалар","gear"]];
+const MNAV=[["home","Бош","home"],["kassa","Касса","cart"],["repair","Ремонт","tools"],["stock","Омбор","box"],["debts","Қарзлар","debt"],["cash","Кирим","swap"],["report","Ҳисобот","chart"],["clients","Мижоз","users"],["set","Созлама","gear"]];
+const S={products:{},repairs:{},debts:{},days:{},cash:{},rdays:{},rcash:{},meta:{}};
+let ui={page:"home",cat:"all",q:"",low:false,rf:"active",rMonth:ym(new Date()),cart:[],disc:0,pay:0,debtor:{name:"",phone:""}};
+let db=null,mode="loading",unsubR=[],isFB=false,fbState="",fbUser=null;
+try{const p=localStorage.getItem("page");if(p&&PAGES.some(x=>x[0]===p))ui.page=p}catch(e){}
+
+/* ---------- helpers ---------- */
+function pad(n){return String(n).padStart(2,"0")}
+function ym(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)}
+function ymd(d){return ym(d)+"-"+pad(d.getDate())}
+function today(){return ymd(new Date())}
+function dayShift(n){const d=new Date();d.setDate(d.getDate()+n);return ymd(d)}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function num(v){const n=parseFloat(String(v??"").replace(/\s/g,"").replace(",","."));return isFinite(n)?n:0}
+function cur(){return S.meta.cur||"сомоний"}
+function money(n){return Math.round(n).toLocaleString("ru-RU").replace(/,/g," ")+" "+cur()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function $(id){return document.getElementById(id)}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1900)}
+function lvl(p){const m=num(p.min);if(p.qty<=m)return"low";if(p.qty<=m*2)return"mid";return""}
+const MONTHS=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+const WD=["Якшанбе","Душанбе","Сешанбе","Чоршанбе","Панҷшанбе","Жума","Шанбе"];
+function monthName(s){const[y,m]=s.split("-");return MONTHS[+m-1]+" "+y}
+function fmtDate(s){if(!s)return"";const[y,m,d]=s.slice(0,10).split("-");return d+"."+m+"."+y}
+function prevMonth(m){const[y,mm]=m.split("-").map(Number);return ym(new Date(y,mm-2,1))}
+function nextMonth(m){const[y,mm]=m.split("-").map(Number);return ym(new Date(y,mm,1))}
+function plist(){return Object.values(S.products).sort((a,b)=>(CATS.indexOf(a.cat)-CATS.indexOf(b.cat))||String(a.model||"").localeCompare(String(b.model||""))||String(a.name).localeCompare(String(b.name)))}
+function match(p,q){return (p.name+" "+(p.model||"")+" "+(p.code||"")+" "+p.cat).toLowerCase().includes(q)}
+
+/* ================= storage ================= */
+const queues={};
+function qw(path,fn){const p=(queues[path]||Promise.resolve()).then(fn).catch(err=>{console.error(err);toast(err&&err.code==="quota_exceeded"?"Жой тўлди: эски маълумотларни ўчиринг":"Сақлашда хато");});queues[path]=p;return p}
+function persistLocal(){try{const {rdays,rcash,...k}=S;localStorage.setItem("dukon_local",JSON.stringify(k))}catch(e){}}
+function put(col,obj){S[col][obj.id]=obj;render();if(db)qw(col+"/"+obj.id,()=>db.collection(col).doc(obj.id).set(obj));else persistLocal()}
+function del(col,id){delete S[col][id];render();if(db)qw(col+"/"+id,()=>db.collection(col).doc(id).delete());else persistLocal()}
+const saveProduct=p=>put("products",p),saveRepair=r=>put("repairs",r),saveDebt=d=>put("debts",d);
+function saveDay(day,items){S.days[day]=items;render();if(db)qw("sales/"+day,()=>db.collection("sales").doc(day).set({month:day.slice(0,7),items}));else persistLocal()}
+function saveCash(month,items){S.cash[month]=items;render();if(db)qw("cash/"+month,()=>db.collection("cash").doc(month).set({month,items}));else persistLocal()}
+function saveMeta(m){S.meta={...S.meta,...m};render();if(db)qw("meta/settings",()=>db.doc("meta/settings").set(S.meta));else persistLocal()}
+
+async function init(){
+  tick();setInterval(tick,15000);render();
+  const c=window.claude;
+  try{db=c&&c.use?await c.use("db"):null}catch(e){db=null}
+  if(!db){db=await initFirebase();if(db){isFB=true}}
+  if(!db){
+    mode="local";
+    try{const d=JSON.parse(localStorage.getItem("dukon_local")||"null");if(d){for(const k in d)if(S[k]!==undefined)S[k]=d[k]}}catch(e){}
+    render();return;
+  }
+  startSubs();
+}
+function startSubs(){
+  mode="db";render();
+  const need={p:1,r:1,s:1,d:1,c:1,m:1};
+  const t=setTimeout(()=>{if(Object.keys(need).length){mode="slow";render()}},10000);
+  const ok=k=>{if(need[k]){delete need[k];if(!Object.keys(need).length){clearTimeout(t);mode="db";render()}}};
+  const er=e=>{clearTimeout(t);mode="err";render();console.error(e)};
+  const map=s=>{const o={};s.docs.forEach(d=>o[d.id]=d.data());return o};
+  const cm=ym(new Date()),pm=prevMonth(cm);
+  db.collection("products").onSnapshot(s=>{S.products=map(s);if(!s.metadata.fromCache)ok("p");render()},er);
+  db.collection("repairs").onSnapshot(s=>{S.repairs=map(s);if(!s.metadata.fromCache)ok("r");render()},er);
+  db.collection("debts").onSnapshot(s=>{S.debts=map(s);if(!s.metadata.fromCache)ok("d");render()},er);
+  db.collection("sales").where("month","in",[pm,cm]).onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=(d.data().items||[]));S.days=o;if(!s.metadata.fromCache)ok("s");render()},er);
+  db.collection("cash").where("month","in",[pm,cm]).onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=(d.data().items||[]));S.cash=o;if(!s.metadata.fromCache)ok("c");render()},er);
+  db.doc("meta/settings").onSnapshot(s=>{S.meta=s.exists?s.data():{};if(!s.metadata.fromCache)ok("m");render()},er);
+}
+function subReportMonth(){
+  unsubR.forEach(f=>f());unsubR=[];S.rdays={};S.rcash={};
+  const cm=ym(new Date());if(ui.rMonth===cm||ui.rMonth===prevMonth(cm)||!db)return;
+  unsubR.push(db.collection("sales").where("month","==",ui.rMonth).onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=(d.data().items||[]));S.rdays=o;render()},e=>console.error(e)));
+  unsubR.push(db.collection("cash").where("month","==",ui.rMonth).onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=(d.data().items||[]));S.rcash=o;render()},e=>console.error(e)));
+}
+function salesOf(month){const src=Object.keys(S.days).some(k=>k.startsWith(month))?S.days:S.rdays;const out=[];for(const k in src)if(k.startsWith(month))(src[k]||[]).forEach(x=>out.push({...x,day:k}));return out}
+function cashOf(month){return (S.cash[month]||S.rcash[month]||[])}
+function lineSum(x){return x.qty*x.price}
+
+/* ================= firebase sync (GitHub / APK version) ================= */
+function loadScript(src){return new Promise((res,rej)=>{const e=document.createElement("script");e.src=src;e.onload=res;e.onerror=rej;document.head.appendChild(e)})}
+function fbCfg(){try{return JSON.parse(localStorage.getItem("fb_cfg")||"null")}catch(e){return null}}
+function parseCfg(t){const m=String(t).match(/\{[\s\S]*\}/);if(!m)return null;let j=m[0].replace(/\/\/.*$/gm,"").replace(/'/g,'"').replace(/([{,]\s*)([A-Za-z_][\w]*)\s*:/g,'$1"$2":').replace(/,\s*}/g,"}");try{const o=JSON.parse(j);return o.apiKey&&o.projectId?o:null}catch(e){return null}}
+async function initFirebase(){
+  const cfg=fbCfg();if(!cfg)return null;
+  try{
+    const V="https://www.gstatic.com/firebasejs/10.12.2/";
+    await loadScript(V+"firebase-app-compat.js");await loadScript(V+"firebase-auth-compat.js");await loadScript(V+"firebase-firestore-compat.js");
+    if(!firebase.apps.length)firebase.initializeApp(cfg);
+    const fs=firebase.firestore();try{await fs.enablePersistence({synchronizeTabs:true})}catch(e){}
+    const u=await new Promise(r=>{const x=firebase.auth().onAuthStateChanged(v=>{x();r(v)})});
+    if(!u){fbState="login";return null}
+    fbUser=u;fbState="ok";
+    const root=fs.collection("shops").doc(u.uid);
+    return {collection:n=>root.collection(n),doc:p=>{const[c,i]=p.split("/");return root.collection(c).doc(i)}};
+  }catch(e){console.error(e);fbState="error";return null}
+}
+async function fbLogin(create){
+  const cfg=parseCfg($("fb_cfg").value)||fbCfg();if(!cfg){toast("Firebase config нотўғри");return}
+  const em=$("fb_em").value.trim(),pw=$("fb_pw").value;if(!em||pw.length<6){toast("Email ва камида 6 белгили пароль");return}
+  try{localStorage.setItem("fb_cfg",JSON.stringify(cfg))}catch(e){}
+  try{const V="https://www.gstatic.com/firebasejs/10.12.2/";if(!window.firebase){await loadScript(V+"firebase-app-compat.js");await loadScript(V+"firebase-auth-compat.js");await loadScript(V+"firebase-firestore-compat.js")}
+    if(!firebase.apps.length)firebase.initializeApp(cfg);
+    if(create)await firebase.auth().createUserWithEmailAndPassword(em,pw);else await firebase.auth().signInWithEmailAndPassword(em,pw);
+    toast("Кирилди ✓");setTimeout(()=>location.reload(),600)
+  }catch(e){toast("Хато: "+(e.code||e.message||e))}
+}
+async function fbLogout(){try{await firebase.auth().signOut()}catch(e){}location.reload()}
+function fbForget(){try{localStorage.removeItem("fb_cfg")}catch(e){}location.reload()}
+function vSync(){
+  if(window.claude&&mode==="db"&&!isFB)return `<section class="pn"><h2>☁️ Синхронлаш</h2><div class="mute">Бу Claude версияси — телефон ва компьютерда шу ҳаволани очсангиз, ҳаммаси ўзи бир хил бўлади. GitHub/APK версиясига ўтказиш учун «Захира нусха олиш» → у ердаги «Захирадан тиклаш».</div></section>`;
+  if(isFB&&fbUser)return `<section class="pn"><h2>☁️ Синхронлаш <small style="color:var(--green)">● уланган</small></h2><div class="mute">Аккаунт: <b style="color:#fff">${esc(fbUser.email)}</b><br>Телефонда ҳам, компьютерда ҳам шу email билан кирсангиз — бирида қўшилган нарса иккинчисида дарров чиқади. Интернет йўқ пайтда ҳам ишлайверади, интернет келганда ўзи синхронланади.</div>
+   <div class="mact"><button class="btn" onclick="migrateLocal()">⬆️ Шу қурилмадаги эски маълумотни булутга юклаш</button><button class="btn o" onclick="fbLogout()">Чиқиш</button></div></section>`;
+  const c=fbCfg();
+  return `<section class="pn" style="grid-column:1/-1"><h2>☁️ Телефон ↔ Компьютер синхронлаш</h2>
+   <div class="mute" style="line-height:1.6">Ҳозир маълумот фақат шу қурилмада. Иккаласи бир хил бўлиши учун бепул <b>Firebase</b> уланг (бир марта, 5 дақиқа):<br>
+   1) <b>console.firebase.google.com</b> → «Create project» → номи: shohk-mobile.<br>
+   2) «Build → Authentication» → «Get started» → <b>Email/Password</b>ни ёқинг.<br>
+   3) «Build → Firestore Database» → «Create database» → «Production mode». Кейин «Rules» бўлимига қуйидагини қўйиб «Publish»:<br>
+   <code style="display:block;background:#061230;border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0;font-size:12px;white-space:pre-wrap;color:#9fe9ff">rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /shops/{uid}/{doc=**} {
+      allow read, write: if request.auth != null &amp;&amp; request.auth.uid == uid;
+    }
+  }
+}</code>
+   4) «Project settings» (⚙️) → пастда «Your apps» → <b>&lt;/&gt; Web</b> → номи ёзиб «Register» → чиққан <b>firebaseConfig = { … }</b> ни нусхалаб пастга қўйинг.<br>
+   5) Email ва пароль ёзиб «Рўйхатдан ўтиш». Иккинчи қурилмада худди шу config ва email билан «Кириш».</div>
+   ${fbState==="error"?`<div class="alert">Firebase'га уланиб бўлмади. Интернетни ва config'ни текширинг.</div>`:""}
+   <label class="f">Firebase config</label><textarea class="fi" id="fb_cfg" rows="4" placeholder='const firebaseConfig = { apiKey: "...", authDomain: "...", projectId: "...", ... };'>${c?esc(JSON.stringify(c)):""}</textarea>
+   <div class="two"><div><label class="f">Email</label><input class="fi" id="fb_em" type="email" autocomplete="username"></div><div><label class="f">Пароль (6+ белги)</label><input class="fi" id="fb_pw" type="password" autocomplete="current-password"></div></div>
+   <div class="mact"><button class="btn g" onclick="fbLogin(false)">Кириш</button><button class="btn" onclick="fbLogin(true)">Рўйхатдан ўтиш</button>${c?`<button class="btn o" onclick="fbForget()">Config'ни ўчириш</button>`:""}</div></section>`;
+}
+function importAll(d){
+  if(!d||typeof d!=="object")throw 0;
+  ["products","repairs","debts"].forEach(col=>Object.values(d[col]||{}).forEach(o=>{if(!o||!o.id)return;S[col][o.id]=o;if(db)qw(col+"/"+o.id,()=>db.collection(col).doc(o.id).set(o))}));
+  Object.entries(d.days||{}).forEach(([k,items])=>{S.days[k]=items;if(db)qw("sales/"+k,()=>db.collection("sales").doc(k).set({month:k.slice(0,7),items}))});
+  Object.entries(d.cash||{}).forEach(([k,items])=>{S.cash[k]=items;if(db)qw("cash/"+k,()=>db.collection("cash").doc(k).set({month:k,items}))});
+  if(d.meta)saveMeta(d.meta);
+  if(!db)persistLocal();render();
+}
+function migrateLocal(){try{const d=JSON.parse(localStorage.getItem("dukon_local")||"null");if(!d){toast("Бу қурилмада эски маълумот йўқ");return}confirmDlg("Шу қурилмадаги маълумот булутга қўшилсинми?",()=>{importAll(d);toast("Юкланди ✓")})}catch(e){toast("Хато")}}
+function restoreDlg(){openM(`<h2>Захирадан тиклаш</h2><div class="mute">«Захира нусха олиш» билан нусхаланган матнни шу ерга қўйинг. Бор маълумотлар устига қўшилади.</div><textarea class="fi" id="rs_t" rows="8" style="margin-top:10px"></textarea><div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="try{importAll(JSON.parse($('rs_t').value));closeM();toast('Тикланди ✓')}catch(e){toast('Матн нотўғри')}">Тиклаш</button></div>`)}
+/* ---------- PWA ---------- */
+let instEv=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();instEv=e;const b=$("instBtn");if(b)b.style.display=""});
+async function doInstall(){if(!instEv)return;instEv.prompt();try{await instEv.userChoice}catch(e){}instEv=null;$("instBtn").style.display="none"}
+if(!window.claude&&"serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+window.addEventListener("online",()=>render());window.addEventListener("offline",()=>render());
+/* ================= sales ================= */
+function addCart(pid){
+  const p=S.products[pid];if(!p)return;
+  const l=ui.cart.find(x=>x.pid===pid);
+  const inCart=l?l.qty:0;
+  if(inCart+1>p.qty){toast("Омборда фақат "+p.qty+" та бор");return}
+  if(l)l.qty++;else ui.cart.push({pid,name:(p.cat==="Стекло"||p.cat==="Чехол"?p.cat+" ":"")+((p.model||p.name)),full:p.name+(p.model?" — "+p.model:""),qty:1,price:num(p.price),cost:num(p.cost),cat:p.cat});
+  render();
+}
+function cartQty(i,d){const l=ui.cart[i];if(!l)return;const p=l.pid&&S.products[l.pid];const n=l.qty+d;if(n<1)return;if(p&&n>p.qty){toast("Омборда фақат "+p.qty+" та бор");return}l.qty=n;render()}
+function cartSet(i,v){const l=ui.cart[i];if(!l)return;let n=Math.max(1,Math.round(num(v)));const p=l.pid&&S.products[l.pid];if(p&&n>p.qty){n=p.qty;toast("Омборда фақат "+p.qty+" та бор")}l.qty=n;render()}
+function cartPrice(i,v){const l=ui.cart[i];if(l){l.price=Math.max(0,num(v));render()}}
+function cartDel(i){ui.cart.splice(i,1);render()}
+function cartClear(){ui.cart=[];ui.disc=0;ui.pay=0;render()}
+function cartTotal(){return ui.cart.reduce((s,l)=>s+l.qty*l.price,0)}
+function checkout(){
+  if(!ui.cart.length)return;
+  const tot=cartTotal(),disc=Math.min(num(ui.disc),tot),pay=PAYS[ui.pay][0];
+  if(ui.pay===3){
+    if(!ui.debtor.name){debtorDlg();return}
+  }
+  const day=today(),sid=uid(),t=new Date().toTimeString().slice(0,5);
+  const items=(S.days[day]||[]).slice();
+  ui.cart.forEach(l=>items.push({id:uid(),sid,t,pid:l.pid||null,name:l.full||l.name,cat:l.cat,qty:l.qty,price:l.price,cost:l.cost,pay}));
+  if(disc>0)items.push({id:uid(),sid,t,pid:null,name:"Чегирма",cat:"Чегирма",qty:1,price:-disc,cost:0,pay});
+  saveDay(day,items);
+  ui.cart.forEach(l=>{if(l.pid&&S.products[l.pid]){const p=S.products[l.pid];saveProduct({...p,qty:Math.max(0,p.qty-l.qty)})}});
+  if(ui.pay===3){saveDebt({id:uid(),client:ui.debtor.name,phone:ui.debtor.phone,amount:tot-disc,paid:0,payments:[],date:day,what:ui.cart.map(l=>l.name+(l.qty>1?" ×"+l.qty:"")).join(", "),sid})}
+  ui.cart=[];ui.disc=0;ui.pay=0;ui.debtor={name:"",phone:""};
+  toast("Сотилди ✓  "+money(tot-disc));
+}
+function returnDlg(day,sid){
+  const ls=(S.days[day]||[]).filter(x=>(x.sid||x.id)===sid&&x.qty>0&&x.cat!=="Чегирма");
+  openM(`<h2>↩️ Возврат (қайтариш)</h2><div class="mute">${fmtDate(day)} ${ls[0]?ls[0].t:""} даги чек. Мижоз қайтарган товар сонини ёзинг.</div>
+  <table style="margin-top:10px"><tr><th>Товар</th><th class="c">Сотилган</th><th class="c">Қайтарилади</th></tr>${ls.map((x,i)=>{const left=x.qty-(x.ret||0);return `<tr><td>${esc(x.name)}<div class="mute">${money(x.price)}</div></td><td class="c">${x.qty}${x.ret?`<div class="mute">қайтган: ${x.ret}</div>`:""}</td><td class="c">${left>0?`<input class="fi" style="width:70px;text-align:center;padding:6px" id="rt_${i}" inputmode="numeric" value="0" data-max="${left}">`:"—"}</td></tr>`}).join("")}</table>
+  <label class="f">Сабаби</label><input class="fi" id="rt_why" placeholder="масалан: тўғри келмади, брак">
+  <div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn r" onclick="doReturn('${day}','${sid}')">↩️ Возврат қилиш</button></div>`);
+}
+function doReturn(day,sid){
+  const items=(S.days[day]||[]).map(x=>({...x}));const ls=items.filter(x=>(x.sid||x.id)===sid&&x.qty>0&&x.cat!=="Чегирма");
+  const why=$("rt_why").value.trim();const rets=[];
+  ls.forEach((x,i)=>{const el=$("rt_"+i);if(!el)return;const q=Math.min(Math.max(0,Math.round(num(el.value))),x.qty-(x.ret||0));if(q>0){x.ret=(x.ret||0)+q;rets.push([x,q])}});
+  if(!rets.length){toast("Қайтариладиган сонни ёзинг");return}
+  const td=today(),rsid=uid(),t=new Date().toTimeString().slice(0,5);
+  if(day===td){rets.forEach(([x,q])=>items.push({id:uid(),sid:rsid,t,pid:x.pid,name:"↩️ "+x.name,cat:x.cat,qty:-q,price:x.price,cost:x.cost,pay:x.pay,isRet:1,of:sid,why}));saveDay(td,items)}
+  else{saveDay(day,items);const ti=(S.days[td]||[]).slice();rets.forEach(([x,q])=>ti.push({id:uid(),sid:rsid,t,pid:x.pid,name:"↩️ "+x.name,cat:x.cat,qty:-q,price:x.price,cost:x.cost,pay:x.pay,isRet:1,of:sid,why}));saveDay(td,ti)}
+  rets.forEach(([x,q])=>{if(x.pid&&S.products[x.pid]){const p=S.products[x.pid];saveProduct({...p,qty:p.qty+q})}});
+  const refund=rets.reduce((a,[x,q])=>a+q*x.price,0);
+  Object.values(S.debts).filter(d=>d.sid===sid).forEach(d=>saveDebt({...d,amount:Math.max(0,num(d.amount)-refund)}));
+  closeM();toast("↩️ Возврат: "+money(refund)+" мижозга қайтарилсин");
+}
+function undoSale_unused(day,sid){
+  const items=S.days[day]||[];const rm=items.filter(x=>(x.sid||x.id)===sid);
+  saveDay(day,items.filter(x=>(x.sid||x.id)!==sid));
+  rm.forEach(it=>{if(it.pid&&S.products[it.pid]){const p=S.products[it.pid];saveProduct({...p,qty:p.qty+it.qty})}});
+  Object.values(S.debts).filter(d=>d.sid===sid).forEach(d=>del("debts",d.id));
+  toast("Бекор қилинди");
+}
+
+/* ================= render ================= */
+function tick(){const d=new Date();$("cDate").innerHTML=`${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}<small>${WD[d.getDay()]}</small>`;$("cTime").textContent=pad(d.getHours())+":"+pad(d.getMinutes())}
+function go(p){ui.page=p;ui.q="";ui.low=false;try{localStorage.setItem("page",p)}catch(e){};if(p!=="report"&&ui.rMonth!==ym(new Date())){ui.rMonth=ym(new Date());subReportMonth()}window.scrollTo(0,0);render()}
+
+function render(){
+  CATS=[...BASECATS.slice(0,-1),...((S.meta.cats||[]).filter(c=>!BASECATS.includes(c))),"Бошқа"];
+  const shop=(S.meta.shop||"SHOHK MOBILE").trim();const parts=shop.split(/\s+/);
+  $("bw1").textContent=parts[0]||"";$("bw2").textContent=parts.slice(1).join(" ");$("brandSmall").textContent=shop.toUpperCase()+" PRO";
+  document.title=shop;
+  const lows=plist().filter(p=>lvl(p)==="low").length;
+  $("bellN").style.display=lows?"":"none";$("bellN").textContent=lows;
+  const debtCount=Object.values(S.debts).filter(d=>num(d.amount)-num(d.paid)>0).length;
+  $("side").innerHTML=PAGES.map(([k,n,i])=>`<button class="${ui.page===k?"on":""}" onclick="go('${k}')">${ic(i)}<span>${n}</span>${k==="debts"&&debtCount?`<span class="badge">${debtCount}</span>`:""}${k==="stock"&&lows?`<span class="badge">${lows}</span>`:""}</button>`).join("")+
+   `<div class="promo"><svg viewBox="0 0 120 120"><defs><linearGradient id="pp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4aa8ff"/><stop offset="1" stop-color="#8b4dff"/></linearGradient></defs><rect x="22" y="14" width="46" height="86" rx="9" transform="rotate(-20 45 57)" fill="url(#pp)" opacity=".9"/><rect x="28" y="22" width="34" height="68" rx="5" transform="rotate(-20 45 57)" fill="#0b1640" opacity=".75"/><path d="M60 92l38-46" stroke="#c9d6ff" stroke-width="7" stroke-linecap="round"/><path d="M92 54l12-14" stroke="#3a8cff" stroke-width="9" stroke-linecap="round"/><circle cx="96" cy="22" r="2" fill="#fff"/><circle cx="18" cy="30" r="1.5" fill="#fff"/></svg>Телефон<br>Таъмирлаш<br>Аксессуарлар<br>Запчастлар</div>`;
+  $("mnav").innerHTML=MNAV.map(([k,n,i])=>`<button class="${ui.page===k?"on":""}" onclick="go('${k}')">${ic(i)}${n}</button>`).join("");
+  $("stats").innerHTML=vStats();
+  const ae=document.activeElement,fid=ae&&ae.id,sel=ae&&ae.selectionStart;
+  const y=window.scrollY;
+  $("page").innerHTML=({home:vHome,kassa:vKassa,repair:vRepair,stock:vStock,clients:vClients,debts:vDebts,cash:vCash,report:vReport,set:vSet})[ui.page]();
+  if(fid&&$(fid)&&$(fid).tagName==="INPUT"&&fid.startsWith("q_")){$(fid).focus();try{$(fid).setSelectionRange(sel,sel)}catch(e){}}
+  window.scrollTo(0,y);
+  {const cb=$("cbar"),n=ui.cart.reduce((a,l)=>a+l.qty,0);const show=n&&(ui.page==="home"||ui.page==="kassa")&&innerWidth<=760;cb.style.display=show?"flex":"none";if(show)cb.innerHTML=`<span>🧾 Чек: ${n} та</span><span>${money(cartTotal()-Math.min(num(ui.disc),cartTotal()))} ›</span>`}
+  const st=!navigator.onLine?["off","Интернет йўқ — кейин синхронланади"]:mode==="db"?["",isFB?"Онлайн (Firebase синхрон)":"Онлайн (Булут база)"]:mode==="local"?["off","Офлайн (Шу браузерда)"]:mode==="loading"?["off","Юкланмоқда…"]:mode==="slow"?["off","Интернет секин…"]:["off","Уланиш йўқ"];
+  const clients=clientList().length;
+  $("foot").innerHTML=`<div>${ic("store")} ${esc(shop.toUpperCase())}</div><div><span class="dot ${st[0]}"></span>${st[1]}</div><div>${ic("db")} База: ${Object.keys(S.products).length} товар</div><div>${ic("users")} Мижозлар: ${clients}</div><div>${ic("tools")} Ремонтлар: ${Object.values(S.repairs).filter(r=>r.status<3).length}</div><div onclick="helpDlg()" style="cursor:pointer">${ic("help")} Ёрдам</div>`;
+}
+
+function dayStats(day){const it=S.days[day]||[];const s=it.reduce((a,x)=>a+lineSum(x),0),p=it.reduce((a,x)=>a+x.qty*(x.price-x.cost),0);
+  const rep=Object.values(S.repairs).filter(r=>r.status===3&&r.givenAt===day);return{s:s+rep.reduce((a,r)=>a+num(r.price),0),p:p+rep.reduce((a,r)=>a+num(r.price)-num(r.parts),0)}}
+function pct(a,b){if(!b)return a?`<span class="up">↑ янги</span>`:"&nbsp;";const v=Math.round((a-b)/b*100);return v>=0?`<span class="up">↑ +${v}%</span>`:`<span class="dn">↓ ${v}%</span>`}
+function vStats(){
+  const t=dayStats(today()),y=dayStats(dayShift(-1));
+  const reps=Object.values(S.repairs).filter(r=>r.status<3);const ready=reps.filter(r=>r.status===2).length,work=reps.length-ready;
+  const stock=Object.values(S.products).reduce((a,p)=>a+p.qty,0);
+  const debt=Object.values(S.debts).reduce((a,d)=>a+Math.max(0,num(d.amount)-num(d.paid)),0);
+  return `<div class="sc c1" onclick="go('kassa')">${ic("cart")}<div><div class="k">Бугунги савдо</div><div class="v">${money(t.s)}</div><div class="s">${pct(t.s,y.s)}</div></div></div>
+  <div class="sc c2" onclick="go('report')">${ic("coins")}<div><div class="k">Бугунги фойда</div><div class="v">${money(t.p)}</div><div class="s">${pct(t.p,y.p)}</div></div></div>
+  <div class="sc c3" onclick="go('repair')">${ic("tools")}<div><div class="k">Ремонтлар</div><div class="v">${reps.length} дона</div><div class="s">${ready} тайёр / ${work} жараёнда</div></div></div>
+  <div class="sc c4" onclick="go('stock')">${ic("box")}<div><div class="k">Омбордаги товар</div><div class="v">${stock} дона</div><div class="s">${Object.keys(S.products).length} хил</div></div></div>
+  <div class="sc c5" onclick="go('debts')">${ic("users")}<div><div class="k">Қарздорлик</div><div class="v">${money(debt)}</div><div class="s">${Object.values(S.debts).filter(d=>num(d.amount)-num(d.paid)>0).length} киши</div></div></div>`;
+}
+
+/* ---------- POS ---------- */
+function vPOS(){
+  const all=plist();const qq=ui.q.trim().toLowerCase();
+  let list=ui.cat==="all"?all:all.filter(p=>p.cat===ui.cat);
+  if(qq)list=list.filter(p=>match(p,qq));
+  const catBtns=[["all","Барчаси","grid"],["Стекло","Стекло","glass"],["Чехол","Чехол","case"],["Кабель","Кабель","cable"],["Зарядка","Зарядка","charger"],["Наушник","Қулоқчин","head"],["more","Бошқа","dots"]];
+  const moreOn=!["all","Стекло","Чехол","Кабель","Зарядка","Наушник"].includes(ui.cat);
+  let tiles=list.map(p=>`<div class="tile ${p.qty<=0?"out":""}" onclick="addCart('${p.id}')"><span class="q ${lvl(p)==="low"?"low":""}">${p.qty}</span><div class="pic">${photo(p)}</div><div class="nm">${esc(p.model?(p.cat==="Наушник"?"Қулоқчин":p.cat==="Бошқа"||p.cat==="Деталь"?p.name:p.cat):p.name)}</div><div class="md">${esc(p.model||(p.cat!==p.name?p.cat:""))}${p.model&&p.name&&p.name!==p.cat?" · "+esc(p.name):""}</div><div class="ft"><span class="pr">${money(num(p.price))}</span><button class="plus" onclick="event.stopPropagation();addCart('${p.id}')">+</button></div></div>`).join("");
+  if(!all.length)tiles=`<div class="empty" style="grid-column:1/-1">Ҳали товар йўқ.<br><br><button class="btn g" onclick="editProduct()">+ Биринчи товарни қўшиш</button></div>`;
+  else if(!list.length)tiles=`<div class="empty" style="grid-column:1/-1">Топилмади</div>`;
+  const tot=cartTotal(),disc=Math.min(num(ui.disc),tot),cnt=ui.cart.reduce((a,l)=>a+l.qty,0);
+  const rows=ui.cart.map((l,i)=>`<tr><td class="c">${i+1}</td><td>${esc(l.name)}</td><td class="c"><span class="stp"><button onclick="cartQty(${i},-1)">−</button><input value="${l.qty}" inputmode="numeric" onchange="cartSet(${i},this.value)"><button onclick="cartQty(${i},1)">+</button></span></td><td class="n"><span onclick="priceDlg(${i})" style="border-bottom:1px dashed #6b8bd6;cursor:pointer">${Math.round(l.price)}</span></td><td class="n">${Math.round(l.qty*l.price)}</td><td class="c"><button class="del" onclick="cartDel(${i})">${ic("trash")}</button></td></tr>`).join("");
+  return `<div class="g-pos">
+   <section class="pn"><h2>${ic("barcode")} Тез савдо (Касса)<span class="r"><button class="btn sm o" onclick="quickService()">+ Хизмат</button></span></h2>
+    <div class="srch"><label>${ic("search")}<input id="q_pos" placeholder="Товарни қидиринг (номи ёки штрих-код)" value="${esc(ui.q)}" oninput="ui.q=this.value;render()" onkeydown="if(event.key==='Enter')scanEnter(this.value)"></label><button class="ibtn" title="Штрих-код сканер шу қаторга ёзади" onclick="$('q_pos').focus();toast('Сканер билан штрих-кодни ўқитинг')">${ic("barcode")}</button></div>
+    <div class="cats">${catBtns.map(([k,n,i])=>`<button class="cat ${(k==="more"?moreOn:ui.cat===k)?"on":""}" onclick="${k==="more"?"moreCats()":`ui.cat='${k}';render()`}">${ic(i)}${k==="more"&&moreOn?esc(ui.cat):n}</button>`).join("")}</div>
+    <div class="tiles">${tiles}</div>
+   </section>
+   <section class="pn" id="cartPanel"><h2>${ic("cart")} Сотиш (Чек)</h2>
+    <div class="cart-wrap"><table><tr><th class="c">№</th><th>Товар номи</th><th class="c">Сони</th><th class="n">Нарх</th><th class="n">Жами</th><th></th></tr>${rows||`<tr><td colspan="6" class="empty">Товар устига босинг — чекка тушади</td></tr>`}</table></div>
+    <div class="sum"><div class="sumbox">
+      <div class="r">Товарлар сони: <b>${cnt}</b></div>
+      <div class="r">Жами сумма: <b>${money(tot)}</b></div>
+      <div class="r">Чегирма: <span class="disc"><input id="disc" inputmode="decimal" value="${disc||""}" placeholder="0" onchange="ui.disc=num(this.value);render()">${ic("pen")}</span></div>
+      <div class="r tot">Тўлаш: <b>${money(tot-disc)}</b></div>
+    </div>
+    <div class="pays">${PAYS.map(([n,i],k)=>`<button class="pay p${k} ${ui.pay===k?"on":""}" onclick="ui.pay=${k};${k===3?"debtorDlg()":"render()"}">${ic(i)}${n}</button>`).join("")}</div></div>
+    ${ui.pay===3&&ui.debtor.name?`<div class="note" style="margin:10px 0 0">Қарзга: <b>${esc(ui.debtor.name)}</b> ${esc(ui.debtor.phone)} <a href="#" onclick="debtorDlg();return false" style="color:#ffd36b">ўзгартириш</a></div>`:""}
+    <div class="acts"><button class="big ok" onclick="checkout()" ${ui.cart.length?"":"disabled"}>${ic("check")} Сотишни тасдиқлаш (F9)</button><button class="big no" onclick="cartClear()">Бекор қилиш</button></div>
+   </section></div>`;
+}
+function scanEnter(v){const s=v.trim().toLowerCase();if(!s)return;const ps=plist();const p=ps.find(x=>String(x.code||"").toLowerCase()===s)||(ps.filter(x=>match(x,s)).length===1?ps.find(x=>match(x,s)):null);if(p){addCart(p.id);ui.q="";render()}}
+function moreCats(){openM(`<h2>Бошқа турлар</h2><div class="chips" style="margin-top:12px">${CATS.filter(c=>!["Стекло","Чехол","Кабель","Зарядка","Наушник"].includes(c)).map(c=>`<button class="chip ${ui.cat===c?"on":""}" onclick="ui.cat='${c}';closeM();render()">${c}</button>`).join("")}</div>`)}
+function priceDlg(i){const l=ui.cart[i];openM(`<h2>Нархни ўзгартириш</h2><div class="mute">${esc(l.name)}</div><label class="f">1 дона нархи</label><input class="fi" id="pp_v" inputmode="decimal" value="${l.price}"><div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="cartPrice(${i},$('pp_v').value);closeM()">Сақлаш</button></div>`);setTimeout(()=>$("pp_v").select(),50)}
+function debtorDlg(){
+  const names=clientList();
+  openM(`<h2>Қарзга сотиш</h2><div class="mute">Ким олди?</div>
+  <label class="f">Мижоз исми</label><input class="fi" id="db_n" list="cl" value="${esc(ui.debtor.name)}"><datalist id="cl">${names.map(c=>`<option value="${esc(c.name)}">`).join("")}</datalist>
+  <label class="f">Телефон рақами</label><input class="fi" id="db_p" type="tel" value="${esc(ui.debtor.phone)}">
+  <div class="mact"><button class="btn o" onclick="ui.pay=0;closeM();render()">Бекор</button><button class="btn g" onclick="saveDebtor()">Тайёр</button></div>`);
+  setTimeout(()=>$("db_n").focus(),50);
+}
+function saveDebtor(){const n=$("db_n").value.trim();if(!n){toast("Исмни ёзинг");return}let ph=$("db_p").value.trim();if(!ph){const c=clientList().find(c=>c.name===n);if(c)ph=c.phone}ui.debtor={name:n,phone:ph};ui.pay=3;closeM();render()}
+
+/* ---------- home ---------- */
+function vHome(){return (fbState==="login"?`<div class="note" onclick="go('set')" style="cursor:pointer">☁️ Синхронлаш учун «Созламалар»да аккаунтингизга киринг.</div>`:"")+vPOS()+`<div class="g-bot">${vWeek()}${vTop()}${vRingPanel()}</div><div class="g-bot g-bot2">${vLowPanel()}${vRecent()}</div>`}
+function vLowPanel(){const l=plist().filter(p=>lvl(p)==="low");return `<section class="pn"><h2>⚠️ Олиб келиш керак <small>(${l.length})</small>${l.length?`<span class="r"><button class="btn o sm" onclick="copyLow()">📋 Нусха</button></span>`:""}</h2>${l.length?`<div class="lowg">${l.slice(0,12).map(p=>`<div class="lowi" onclick="recvDlg('${p.id}')"><span class="lpic">${photo(p)}</span><span class="grow"><b>${esc(p.model||p.name)}</b><span class="mute">${esc(p.cat)}</span></span><span class="qb low">${p.qty}</span></div>`).join("")}</div>`:`<div class="empty">Ҳаммаси етарли ✓</div>`}</section>`}
+function vRecent(){const it=(S.days[today()]||[]).slice(-7).reverse();return `<section class="pn"><h2>🧾 Сўнгги сотувлар<span class="r"><button class="btn o sm" onclick="go('kassa')">Ҳаммаси ›</button></span></h2>${it.length?`<table>${it.map(x=>`<tr><td class="mute">${x.t}</td><td style="${x.isRet?"color:var(--red)":""}">${esc(x.name)}${Math.abs(x.qty)>1?" ×"+Math.abs(x.qty):""}</td><td class="n" style="${x.isRet?"color:var(--red)":""}">${money(lineSum(x))}</td></tr>`).join("")}</table>`:`<div class="empty">Бугун ҳали сотув йўқ</div>`}</section>`}
+function vWeek(){
+  const days=[];for(let i=6;i>=0;i--){const d=dayShift(-i);days.push([d,dayStats(d).s])}
+  const mx=Math.max(100,...days.map(d=>d[1]));const step=Math.pow(10,Math.floor(Math.log10(mx)));const top=Math.ceil(mx/step)*step;
+  const yl=[5,4,3,2,1,0].map(k=>Math.round(top*k/5).toLocaleString("ru-RU").replace(/,/g," "));
+  return `<section class="pn"><h2>${ic("chart")} Савдо статистикаси <small>(7 кун)</small></h2>
+   <div class="bars"><div class="yl">${yl.map(v=>`<span>${v}</span>`).join("")}</div>${days.map(([d,v],i)=>`<div class="bar ${i===6?"today":""}" title="${money(v)}"><i style="height:${Math.round(v/top*100)}%"></i></div>`).join("")}</div>
+   <div class="xl">${days.map(([d])=>`<span>${d.slice(8)}.${d.slice(5,7)}</span>`).join("")}</div></section>`;
+}
+function vTop(){
+  const m=ym(new Date());const by={};salesOf(m).forEach(x=>{if(x.cat==="Чегирма"||x.cat==="Хизмат")return;by[x.name]=(by[x.name]||0)+x.qty});
+  const t=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  return `<section class="pn top3"><h2>${ic("trophy")} Топ товарлар <small>(сотув бўйича, шу ой)</small></h2>${t.length?t.map(([n,q],i)=>`<div class="it"><span class="medal m${i+1}">${i+1}</span><span>${esc(n)}</span><b>${q} дона</b></div>`).join(""):`<div class="empty">Ҳали сотув йўқ</div>`}</section>`;
+}
+function vRingPanel(){
+  const r=Object.values(S.repairs).filter(x=>x.status<3);const n=r.length;const a=r.filter(x=>x.status===2).length,b=r.filter(x=>x.status===1).length,c=r.filter(x=>x.status===0).length;
+  const P=v=>n?Math.round(v/n*100):0;const pa=P(a),pb=P(b);
+  const bg=n?`conic-gradient(#22d36b 0 ${pa}%,#ff9b2f ${pa}% ${pa+pb}%,#c5cde0 ${pa+pb}% 100%)`:"conic-gradient(#1d2f5e 0 100%)";
+  return `<section class="pn"><h2>${ic("tools")} Ремонтлар ҳолати</h2><div class="donut"><div class="ring" style="background:${bg};box-shadow:0 0 18px rgba(34,211,107,.35)"><div><span>Жами<b>${n}</b></span></div></div>
+   <div class="leg"><div><i style="background:#22d36b"></i>Тайёр — ${a} (${pa}%)</div><div><i style="background:#ff9b2f"></i>Жараёнда — ${b} (${pb}%)</div><div><i style="background:#c5cde0"></i>Кутилмоқда — ${c} (${n?100-pa-pb:0}%)</div></div></div></section>`;
+}
+
+/* ---------- kassa ---------- */
+function vKassa(){
+  const day=today();
+  const all=[];Object.keys(S.days).sort().forEach(d=>{const gr={};(S.days[d]||[]).forEach(x=>{const k=x.sid||x.id;(gr[k]=gr[k]||[]).push(x)});Object.entries(gr).forEach(([sid,ls])=>all.push({day:d,sid,ls}))});
+  all.reverse();const hq=(ui.hq||"").trim().toLowerCase();
+  const scope=ui.hist==="all"?all:all.filter(c=>c.day===day);
+  const g=(hq?scope.filter(c=>c.ls.some(x=>String(x.name).toLowerCase().includes(hq))):scope).slice(0,150);
+  return vPOS()+`<section class="pn"><h2>${ic("cash")} Чеклар тарихи<span class="r chips" style="margin:0"><button class="chip ${ui.hist!=="all"?"on":""}" onclick="ui.hist='today';render()">Бугун</button><button class="chip ${ui.hist==="all"?"on":""}" onclick="ui.hist='all';render()">2 ойлик</button></span></h2>
+  <div class="srch"><label>${ic("search")}<input id="q_hist" placeholder="Чекдан товар қидириш" value="${esc(ui.hq||"")}" oninput="ui.hq=this.value;render()"></label></div>
+  <div class="mute" style="margin-bottom:8px">🔒 Сотилган чекни ўчириб бўлмайди. Мижоз товарни қайтарса — «Возврат» тугмасини босинг.</div>
+  ${g.length?`<div style="overflow-x:auto"><table><tr><th>Сана</th><th>Товарлар</th><th>Тўлов</th><th class="n">Сумма</th><th></th></tr>${g.map(({day:d,sid,ls})=>{const isR=ls.some(x=>x.isRet);const canR=!isR&&ls.some(x=>x.qty>0&&x.cat!=="Чегирма"&&x.qty>(x.ret||0));const retd=ls.some(x=>x.ret);return `<tr style="${isR?"background:rgba(255,59,79,.08)":""}"><td>${d===day?"":fmtDate(d).slice(0,5)+" "}${ls[0].t}</td><td>${ls.map(x=>esc(x.name)+(Math.abs(x.qty)>1?" ×"+Math.abs(x.qty):"")+(x.ret?` <span class="pill s1">қайтди ${x.ret}</span>`:"")).join(", ")}${isR&&ls[0].why?`<div class="mute">Сабаб: ${esc(ls[0].why)}</div>`:""}</td><td>${isR?`<span class="pill" style="background:rgba(255,59,79,.2);color:#ff9aa5">Возврат</span>`:esc(ls[0].pay||"Нақд")}</td><td class="n" style="${isR?"color:var(--red)":""}">${money(ls.reduce((a,x)=>a+lineSum(x),0))}</td><td class="c">${canR?`<button class="btn o sm" onclick="returnDlg('${d}','${sid}')">↩️ Возврат</button>`:retd&&!canR?`<span class="mute">тўлиқ қайтган</span>`:""}</td></tr>`}).join("")}</table></div>`:`<div class="empty">${ui.hist==="all"?"Чек йўқ":"Бугун ҳали сотув йўқ"}</div>`}</section>`;
+}
+function quickService(){
+  openM(`<h2>Хизмат ёки бошқа нарса</h2><div class="mute">Омборда йўқ нарса: стекло ёпиштириш, прошивка, зарядлаш…</div>
+  <label class="f">Нима</label><input class="fi" id="x_n" placeholder="масалан: Стекло ёпиштириш">
+  <label class="f">Нархи</label><input class="fi" id="x_p" inputmode="decimal">
+  <div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="addService()">Чекка қўшиш</button></div>`);
+  setTimeout(()=>$("x_n").focus(),50);
+}
+function addService(){const n=$("x_n").value.trim(),p=num($("x_p").value);if(!n||!p){toast("Ном ва нархни ёзинг");return}ui.cart.push({pid:null,name:n,full:n,qty:1,price:p,cost:0,cat:"Хизмат"});closeM();render()}
+
+/* ---------- stock ---------- */
+function vStock(){
+  const all=plist();const lows=all.filter(p=>lvl(p)==="low");
+  let list=ui.cat==="all"||ui.cat==="more"?all:all.filter(p=>p.cat===ui.cat);
+  if(ui.low)list=list.filter(p=>lvl(p)==="low");
+  const qq=ui.q.trim().toLowerCase();if(qq)list=list.filter(p=>match(p,qq));
+  const val=all.reduce((a,p)=>a+p.qty*num(p.cost),0),sval=all.reduce((a,p)=>a+p.qty*num(p.price),0);
+  let h=`<div class="kv"><div class="pn"><div class="k">Товар хиллари</div><div class="v">${all.length}</div></div><div class="pn"><div class="k">Жами дона</div><div class="v">${all.reduce((a,p)=>a+p.qty,0)}</div></div><div class="pn"><div class="k">Олиш нархида</div><div class="v">${money(val)}</div></div><div class="pn"><div class="k">Сотиш нархида</div><div class="v">${money(sval)}</div></div></div>`;
+  if(lows.length)h+=`<div class="alert" onclick="ui.low=!ui.low;render()">⚠️ ${lows.length} та товар кам қолди — ${ui.low?"ҳаммасини кўрсатиш":"фақат шуларни кўриш"}</div>`;
+  h+=`<section class="pn"><h2>${ic("box")} Товарлар (Омбор)<span class="r" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="bulkDlg()">⚡ Кўп моделга бирданига</button><button class="btn g" onclick="editProduct()">+ Янги товар</button></span></h2>
+  <div class="srch"><label>${ic("search")}<input id="q_st" placeholder="Модел, ном ёки штрих-код" value="${esc(ui.q)}" oninput="ui.q=this.value;render()"></label></div>
+  <div class="chips"><button class="chip ${ui.cat==="all"||ui.cat==="more"?"on":""}" onclick="ui.cat='all';render()">Барчаси ${all.length}</button>${CATS.map(c=>`<button class="chip ${ui.cat===c?"on":""}" onclick="ui.cat='${c}';render()">${c} ${all.filter(p=>p.cat===c).length}</button>`).join("")}</div>`;
+  if(!list.length)return h+`<div class="empty">${all.length?"Топилмади":"Ҳали товар йўқ. «+ Янги товар» ни босинг."}</div></section>`;
+  h+=`<div style="overflow-x:auto"><table><tr><th>Расм</th><th>Модел / Номи</th><th class="n">Олиш</th><th class="n">Сотиш</th><th class="c">Қолди</th><th class="c">Кирим</th><th></th></tr>${list.map(p=>`<tr><td>${thumb(p)}</td><td onclick="editProduct('${p.id}')" style="cursor:pointer"><b>${esc(p.model||p.name)}</b><div class="mute">${esc(p.cat)}${p.model&&p.name!==p.cat?" · "+esc(p.name):""}</div></td><td class="n">${Math.round(num(p.cost))}</td><td class="n">${Math.round(num(p.price))}</td><td class="c"><span class="qb ${lvl(p)}">${p.qty}</span></td><td class="c"><span class="stp"><button onclick="adj('${p.id}',-1)">−</button><button onclick="adj('${p.id}',1)">+</button><button style="width:auto;padding:0 8px;font-size:13px" onclick="recvDlg('${p.id}')">📥</button></span></td><td class="c"><button class="del" style="color:#8fc0ff" onclick="editProduct('${p.id}')">${ic("pen")}</button></td></tr>`).join("")}</table></div></section>`;
+  return h;
+}
+let BK={brand:"Samsung",sel:{}};
+function bulkDlg(){BK.sel={};openM(`<h2>⚡ Кўп моделга бирданига қўшиш</h2><div class="mute">Масалан, битта стеклони 20 та Samsung моделига бир босишда қўшинг.</div>
+ <div class="two"><div><label class="f">Тури</label><select class="fi" id="b_cat">${CATS.map(c=>`<option ${c===(CATS.includes(ui.cat)?ui.cat:"Стекло")?"selected":""}>${c}</option>`).join("")}</select></div><div><label class="f">Номи / тури</label><input class="fi" id="b_name" placeholder="Стекло 9D"></div></div>
+ <div class="two"><div><label class="f">Олиш нархи</label><input class="fi" id="b_cost" inputmode="decimal"></div><div><label class="f">Сотиш нархи</label><input class="fi" id="b_price" inputmode="decimal"></div></div>
+ <div class="two"><div><label class="f">Ҳар биридан нечта</label><input class="fi" id="b_qty" inputmode="numeric" value="5"></div><div><label class="f">Энг кам миқдор ⚠️</label><input class="fi" id="b_min" inputmode="numeric" value="2"></div></div>
+ <label class="f">Брендни танланг</label><div class="chips" id="b_brands"></div>
+ <div class="srch" style="margin:0 0 8px"><label>${ic("search")}<input id="b_q" placeholder="Филтр: A5, Note 13, Pro…" oninput="bulkList()"></label></div>
+ <div style="display:flex;gap:8px;margin-bottom:8px"><button class="btn o sm" onclick="bulkAll(1)">✓ Ҳаммасини белгилаш</button><button class="btn o sm" onclick="bulkAll(0)">Тозалаш</button><span class="mute" id="b_cnt" style="margin-left:auto;align-self:center"></span></div>
+ <div class="mpgrid" id="b_list"></div>
+ <div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="bulkSave()">Қўшиш</button></div>`);bulkList()}
+function bulkBrand(b){BK.brand=b;$("b_q").value="";bulkList()}
+function bulkVis(){const q=($("b_q").value||"").trim().toLowerCase();return MODELS[BK.brand].filter(m=>!q||q.split(/\s+/).every(t=>m.toLowerCase().includes(t)))}
+function bulkList(){$("b_brands").innerHTML=Object.keys(MODELS).map(b=>{const n=MODELS[b].filter(m=>BK.sel[m]).length;return `<button class="chip ${BK.brand===b?"on":""}" onclick="bulkBrand('${b}')">${b}${n?" ("+n+")":""}</button>`}).join("");
+ $("b_list").innerHTML=bulkVis().map(m=>`<button class="mpo ${BK.sel[m]?"on":""}" onclick="bulkTog('${m.replace(/'/g,"")}')">${BK.sel[m]?"✓ ":""}${esc(m)}</button>`).join("");
+ const n=Object.values(BK.sel).filter(Boolean).length;$("b_cnt").textContent=n?n+" та модел танланди":""}
+function bulkTog(m){BK.sel[m]=!BK.sel[m];bulkList()}
+function bulkAll(v){bulkVis().forEach(m=>BK.sel[m]=!!v);bulkList()}
+function bulkSave(){const ms=Object.keys(BK.sel).filter(m=>BK.sel[m]);if(!ms.length){toast("Камида битта модел танланг");return}
+ const cat=$("b_cat").value,name=$("b_name").value.trim()||cat,cost=num($("b_cost").value),price=num($("b_price").value),qty=Math.max(0,Math.round(num($("b_qty").value))),min=Math.max(0,Math.round(num($("b_min").value)));
+ let added=0,upd=0;const ex=Object.values(S.products);
+ ms.forEach(m=>{const e=ex.find(p=>p.cat===cat&&p.model===m&&p.name===name);if(e){saveProduct({...e,qty:e.qty+qty});upd++}else{saveProduct({id:uid(),cat,name,model:m,cost,price,qty,min,code:"",img:""});added++}});
+ closeM();toast(`✓ ${added} та қўшилди${upd?", "+upd+" тасига сони қўшилди":""}`)}
+function recvDlg(id){const p=S.products[id];openM(`<h2>📥 Товар келди</h2><div class="tt">${esc(p.model||"")} ${esc(p.name)}</div><div class="mute">Ҳозир омборда: ${p.qty} та</div>
+ <div class="two"><div><label class="f">Нечта келди</label><input class="fi" id="rc_q" inputmode="numeric" value="10"></div><div><label class="f">Олиш нархи (1 дона)</label><input class="fi" id="rc_c" inputmode="decimal" value="${num(p.cost)}"></div></div>
+ <label style="display:flex;gap:8px;align-items:center;margin-top:12px"><input type="checkbox" id="rc_x"> Тўланган пулни «Чиқим»га ёзиш</label>
+ <div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="recvSave('${id}')">Қабул қилиш</button></div>`);setTimeout(()=>$("rc_q").select(),50)}
+function recvSave(id){const p=S.products[id];const q=Math.round(num($("rc_q").value)),c=num($("rc_c").value);if(q<1){toast("Сонини ёзинг");return}
+ saveProduct({...p,qty:p.qty+q,cost:c||num(p.cost)});
+ if($("rc_x").checked){const m=ym(new Date());saveCash(m,[...cashOf(m),{id:uid(),date:today(),type:"out",amount:q*c,note:"Товар олинди: "+(p.model||"")+" "+p.name+" ×"+q}])}
+ closeM();toast("+"+q+" та қабул қилинди ✓")}
+function adj(id,d){const p=S.products[id];if(!p)return;saveProduct({...p,qty:Math.max(0,p.qty+d)})}
+function showLow(){const l=plist().filter(p=>lvl(p)==="low");openM(`<h2>⚠️ Кам қолганлар (${l.length})</h2>${l.length?`<table>${l.map(p=>`<tr><td>${esc(p.cat)}</td><td>${esc(p.model||"")} ${esc(p.name)}</td><td class="c"><span class="qb low">${p.qty}</span></td></tr>`).join("")}</table>`:`<div class="empty">Ҳаммаси етарли ✓</div>`}<div class="mact">${l.length?`<button class="btn" onclick="copyLow()">📋 Рўйхатни нусхалаш</button>`:""}<button class="btn o" onclick="closeM()">Ёпиш</button></div>`)}
+function copyLow(){const t="Олиб келиш керак:\n"+plist().filter(p=>lvl(p)==="low").map(p=>`- ${p.cat}: ${p.model||""} ${p.name} (қолди ${p.qty})`).join("\n");navigator.clipboard.writeText(t).then(()=>toast("Нусхаланди — Telegram'га қўйинг"),()=>toast("Нусхалаб бўлмади"))}
+
+function editProduct(id,copyFrom){
+  const p=id?S.products[id]:(copyFrom?{...S.products[copyFrom],id:null,qty:0,code:""}:{cat:CATS.includes(ui.cat)?ui.cat:"Стекло",name:"",model:"",cost:"",price:"",qty:"",min:3,code:""});
+  window._img=p.img||"";
+  openM(`<h2>${id?"Товарни таҳрирлаш":"Янги товар"}</h2>
+  <div class="phbox"><div class="pv" id="f_pv">${photo({...p,img:window._img})}</div><div style="display:flex;flex-direction:column;gap:8px"><label class="btn upl">📷 Расмга олиш<input type="file" accept="image/*" capture="environment" onchange="pickImg(this)"></label><label class="btn o upl">🖼 Галереядан<input type="file" accept="image/*" onchange="pickImg(this)"></label>${p.img?`<button class="btn o sm" onclick="window._img='';$('f_pv').innerHTML=pic($('f_cat').value)">Расмни олиб ташлаш</button>`:""}</div></div>
+  <label class="f">Тури</label><select class="fi" id="f_cat">${CATS.map(c=>`<option ${p.cat===c?"selected":""}>${c}</option>`).join("")}</select>
+  <label class="f">Қайси телефонга (модел)</label>${mpick("f_model",p.model)}
+  <label class="f">Номи / тури</label><input class="fi" id="f_name" value="${esc(p.name)}" placeholder="Стекло 9D, Кабель 1м, Зарядка 33W">
+  <div class="two"><div><label class="f">Олиш нархи</label><input class="fi" id="f_cost" inputmode="decimal" value="${esc(p.cost)}"></div><div><label class="f">Сотиш нархи</label><input class="fi" id="f_price" inputmode="decimal" value="${esc(p.price)}"></div></div>
+  <div class="two"><div><label class="f">Ҳозир нечта бор</label><input class="fi" id="f_qty" inputmode="numeric" value="${esc(p.qty)}"></div><div><label class="f">Энг кам миқдор ⚠️</label><input class="fi" id="f_min" inputmode="numeric" value="${esc(p.min)}"></div></div>
+  <label class="f">Штрих-код (ихтиёрий)</label><input class="fi" id="f_code" value="${esc(p.code)}">
+  <div class="mact">${id?`<button class="btn r" onclick="confirmDlg('Бу товарни ўчирасизми?',()=>del('products','${id}'))">Ўчириш</button><button class="btn o" onclick="editProduct(null,'${id}')">Нусха</button>`:`<button class="btn o" onclick="closeM()">Бекор</button>`}<button class="btn g" onclick="submitProduct('${id||""}')">Сақлаш</button></div>
+  ${id?`<div class="mute" style="margin-top:10px">«Нусха» — шу товарни бошқа модел учун тез қўшиш.</div>`:""}`);
+  
+}
+async function pickImg(inp){const f=inp.files&&inp.files[0];if(!f)return;try{window._img=await resizeImg(f,320);$("f_pv").innerHTML=`<img src="${window._img}">`}catch(e){toast("Расмни очиб бўлмади")}}
+async function pickCatImg(cat,inp){const f=inp.files&&inp.files[0];if(!f)return;try{const u=await resizeImg(f,320);saveMeta({catImg:{...(S.meta.catImg||{}),[cat]:u}});toast("Сақланди ✓")}catch(e){toast("Расмни очиб бўлмади")}}
+function submitProduct(id){
+  const name=$("f_name").value.trim(),model=$("f_model").value.trim();
+  if(!name&&!model){toast("Ном ёки моделни ёзинг");return}
+  const old=id?S.products[id]:{};
+  saveProduct({...old,id:id||uid(),cat:$("f_cat").value,name:name||$("f_cat").value,model,cost:num($("f_cost").value),price:num($("f_price").value),qty:Math.max(0,Math.round(num($("f_qty").value))),min:Math.max(0,Math.round(num($("f_min").value))),code:$("f_code").value.trim(),img:window._img||""});
+  closeM();toast("Сақланди ✓");
+}
+
+/* ---------- repairs ---------- */
+function vRepair(){
+  const all=Object.values(S.repairs).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt))||String(b.id).localeCompare(String(a.id)));
+  const groups={active:all.filter(r=>r.status<3),ready:all.filter(r=>r.status===2),done:all.filter(r=>r.status===3),all};
+  let list=groups[ui.rf];const qq=ui.q.trim().toLowerCase();
+  if(qq)list=list.filter(r=>(r.client+" "+r.phone+" "+r.device+" "+r.issue).toLowerCase().includes(qq));
+  let h=`<div class="g2" style="margin-bottom:14px">${vRingPanel()}<section class="pn"><h2>${ic("coins")} Шу ой ремонтдан</h2>${(()=>{const m=ym(new Date());const d=all.filter(r=>r.status===3&&String(r.givenAt||"").startsWith(m));const s=d.reduce((a,r)=>a+num(r.price),0),p=d.reduce((a,r)=>a+num(r.price)-num(r.parts),0);return `<div class="kv" style="grid-template-columns:1fr 1fr 1fr;margin:0"><div><div class="mute">Берилди</div><div style="font-size:24px;font-weight:700">${d.length} та</div></div><div><div class="mute">Тушум</div><div style="font-size:22px;font-weight:700">${money(s)}</div></div><div><div class="mute">Фойда</div><div style="font-size:22px;font-weight:700;color:var(--green)">${money(p)}</div></div></div>`})()}</section></div>`;
+  h+=`<section class="pn"><h2>${ic("tools")} Ремонт (Сервис)<span class="r"><button class="btn g" onclick="editRepair()">+ Қабул қилиш</button></span></h2>
+  <div class="srch"><label>${ic("search")}<input id="q_rp" placeholder="Мижоз, рақам, модел…" value="${esc(ui.q)}" oninput="ui.q=this.value;render()"></label></div>
+  <div class="chips">${[["active","Жараёнда"],["ready","Тайёр"],["done","Берилган"],["all","Ҳаммаси"]].map(([k,n])=>`<button class="chip ${ui.rf===k?"on":""}" onclick="ui.rf='${k}';render()">${n} ${groups[k].length}</button>`).join("")}</div>`;
+  if(!list.length)return h+`<div class="empty">Ремонт йўқ</div></section>`;
+  h+=`<div class="list">${list.map(r=>{const debt=num(r.price)-num(r.prepaid);return `<div class="row" onclick="editRepair('${r.id}')" style="cursor:pointer"><div style="width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(139,77,255,.2);color:#c7a8ff">${ic("phone")}</div><div class="grow"><div class="tt">${esc(r.device)} — <span style="font-weight:400">${esc(r.issue)}</span></div><div class="mute">${esc(r.client)} ${r.phone?"· "+esc(r.phone):""} · ${fmtDate(r.createdAt)}</div></div><div style="text-align:right"><span class="pill s${r.status}">${RST[r.status]}</span><div style="margin-top:4px;font-weight:600">${money(num(r.price))}</div>${r.status<3&&num(r.prepaid)?`<div class="mute">қолди ${money(debt)}</div>`:""}</div></div>`}).join("")}</div></section>`;
+  return h;
+}
+function editRepair(id){
+  const r=id?S.repairs[id]:{client:"",phone:"",device:"",issue:"",price:"",prepaid:"",parts:"",note:"",status:0};
+  openM(`<h2>${id?"Ремонт":"Янги ремонт қабул қилиш"}</h2>
+  ${id?`<div class="chips" style="margin-top:8px">${RST.map((s,i)=>`<button class="chip ${r.status===i?"on":""}" onclick="setStatus('${id}',${i})">${s}</button>`).join("")}</div>`:""}
+  <label class="f">Телефон модели</label>${mpick("r_d",r.device)}
+  <label class="f">Носозлик</label><input class="fi" id="r_i" value="${esc(r.issue)}" placeholder="Экран синган">
+  <div class="two"><div><label class="f">Мижоз исми</label><input class="fi" id="r_c" value="${esc(r.client)}"></div><div><label class="f">Мижоз рақами</label><input class="fi" id="r_ph" type="tel" value="${esc(r.phone)}"></div></div>
+  <div class="two"><div><label class="f">Ремонт нархи</label><input class="fi" id="r_p" inputmode="decimal" value="${esc(r.price)}"></div><div><label class="f">Олдиндан олинди</label><input class="fi" id="r_pp" inputmode="decimal" value="${esc(r.prepaid)}"></div></div>
+  <label class="f">Деталга кетган пул (фойда учун)</label><input class="fi" id="r_pa" inputmode="decimal" value="${esc(r.parts)}">
+  <label class="f">Изоҳ (пароль, комплект…)</label><textarea class="fi" id="r_n" rows="2">${esc(r.note)}</textarea>
+  ${id?`<div class="mute" style="margin-top:8px">Қабул: ${fmtDate(r.createdAt)}${r.givenAt?" · Берилди: "+fmtDate(r.givenAt):""}</div>`:""}
+  <div class="mact">${id?`<button class="btn r" onclick="confirmDlg('Бу ремонтни ўчирасизми?',()=>del('repairs','${id}'))">Ўчириш</button>`:`<button class="btn o" onclick="closeM()">Бекор</button>`}<button class="btn g" onclick="submitRepair('${id||""}')">Сақлаш</button></div>`);
+}
+function readRepair(id){const old=id?S.repairs[id]:{status:0,createdAt:today()};return {...old,id:id||uid(),device:$("r_d").value.trim(),issue:$("r_i").value.trim(),client:$("r_c").value.trim(),phone:$("r_ph").value.trim(),price:num($("r_p").value),prepaid:num($("r_pp").value),parts:num($("r_pa").value),note:$("r_n").value.trim()}}
+function submitRepair(id){const r=readRepair(id);if(!r.device){toast("Моделни ёзинг");return}saveRepair(r);closeM();toast("Сақланди ✓")}
+function setStatus(id,i){const r=readRepair(id);r.status=i;r.givenAt=i===3?(r.givenAt||today()):null;saveRepair(r);editRepair(id);toast(RST[i])}
+
+/* ---------- clients ---------- */
+function clientList(){
+  const m={};const key=(n,p)=>(p||"").replace(/\D/g,"")||("n:"+String(n||"").toLowerCase());
+  Object.values(S.repairs).forEach(r=>{if(!r.client&&!r.phone)return;const k=key(r.client,r.phone);const c=m[k]||(m[k]={name:r.client,phone:r.phone,rep:0,spent:0,debt:0,last:""});c.rep++;if(r.status===3)c.spent+=num(r.price);if(r.createdAt>c.last)c.last=r.createdAt;if(!c.name)c.name=r.client});
+  Object.values(S.debts).forEach(d=>{const k=key(d.client,d.phone);const c=m[k]||(m[k]={name:d.client,phone:d.phone,rep:0,spent:0,debt:0,last:""});c.debt+=Math.max(0,num(d.amount)-num(d.paid));c.spent+=num(d.paid);if(d.date>c.last)c.last=d.date;if(!c.phone)c.phone=d.phone});
+  return Object.values(m).sort((a,b)=>String(b.last).localeCompare(String(a.last)));
+}
+function vClients(){
+  let l=clientList();const qq=ui.q.trim().toLowerCase();if(qq)l=l.filter(c=>(c.name+" "+c.phone).toLowerCase().includes(qq));
+  return `<section class="pn"><h2>${ic("users")} Мижозлар <small>(ремонт ва қарзлардан ўзи йиғилади)</small></h2>
+  <div class="srch"><label>${ic("search")}<input id="q_cl" placeholder="Исм ёки рақам" value="${esc(ui.q)}" oninput="ui.q=this.value;render()"></label></div>
+  ${l.length?`<div style="overflow-x:auto"><table><tr><th>Исм</th><th>Рақам</th><th class="c">Ремонт</th><th class="n">Тўлаган</th><th class="n">Қарзи</th><th>Охирги</th></tr>${l.map(c=>`<tr><td><b>${esc(c.name||"—")}</b></td><td>${esc(c.phone||"")}</td><td class="c">${c.rep}</td><td class="n">${money(c.spent)}</td><td class="n" style="color:${c.debt?"var(--red)":"inherit"}">${c.debt?money(c.debt):"—"}</td><td>${fmtDate(c.last)}</td></tr>`).join("")}</table></div>`:`<div class="empty">Ҳали мижоз йўқ. Ремонт қабул қилганда ёки қарзга сотганда шу ерга тушади.</div>`}</section>`;
+}
+
+/* ---------- debts ---------- */
+function vDebts(){
+  const all=Object.values(S.debts).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const open=all.filter(d=>num(d.amount)-num(d.paid)>0),closed=all.filter(d=>num(d.amount)-num(d.paid)<=0);
+  const tot=open.reduce((a,d)=>a+num(d.amount)-num(d.paid),0);
+  const row=d=>{const rest=num(d.amount)-num(d.paid);return `<div class="row"><div style="width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(255,59,79,.18);color:#ff9aa5">${ic("users")}</div><div class="grow"><div class="tt">${esc(d.client)} ${d.phone?`<span class="mute">· ${esc(d.phone)}</span>`:""}</div><div class="mute">${fmtDate(d.date)} · ${esc(d.what||"")}</div>${(d.payments||[]).length?`<div class="mute">Тўловлар: ${(d.payments||[]).map(p=>fmtDate(p.date)+" — "+money(p.amount)).join("; ")}</div>`:""}</div><div style="text-align:right"><div style="font-weight:700;color:${rest>0?"var(--red)":"var(--green)"}">${rest>0?money(rest):"Ёпилди ✓"}</div><div class="mute">жами ${money(num(d.amount))}</div><div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">${rest>0?`<button class="btn g sm" onclick="payDebt('${d.id}')">Тўлади</button>`:""}<button class="btn o sm" onclick="confirmDlg('Бу қарзни ўчирасизми?',()=>del('debts','${d.id}'))">${ic("trash")}</button></div></div></div>`};
+  return `<div class="kv"><div class="pn"><div class="k">Жами қарздорлик</div><div class="v" style="color:var(--red)">${money(tot)}</div></div><div class="pn"><div class="k">Қарздорлар</div><div class="v">${open.length} киши</div></div></div>
+  <section class="pn"><h2>${ic("debt")} Қарзлар<span class="r"><button class="btn g" onclick="newDebt()">+ Қарз ёзиш</button></span></h2>
+  <div class="mute" style="margin-bottom:8px">Кассада «Қарзга» тўловини танласангиз, қарз шу ерга ўзи тушади.</div>
+  ${open.length?`<div class="list">${open.map(row).join("")}</div>`:`<div class="empty">Ҳеч ким қарз эмас ✓</div>`}
+  ${closed.length?`<h2 style="margin-top:16px;font-size:16px">Ёпилган қарзлар (${closed.length})</h2><div class="list">${closed.slice(0,30).map(row).join("")}</div>`:""}</section>`;
+}
+function payDebt(id){const d=S.debts[id];const rest=num(d.amount)-num(d.paid);openM(`<h2>Қарз тўлови</h2><div class="mute">${esc(d.client)} — қолди ${money(rest)}</div><label class="f">Қанча тўлади</label><input class="fi" id="pd_v" inputmode="decimal" value="${rest}"><div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="doPay('${id}')">Сақлаш</button></div>`);setTimeout(()=>$("pd_v").select(),50)}
+function doPay(id){const d=S.debts[id];const v=num($("pd_v").value);if(v<=0){toast("Суммани ёзинг");return}saveDebt({...d,paid:num(d.paid)+v,payments:[...(d.payments||[]),{date:today(),amount:v}]});closeM();toast("Тўлов сақланди ✓")}
+function newDebt(){openM(`<h2>Қарз ёзиш</h2><label class="f">Мижоз исми</label><input class="fi" id="nd_n" list="cl2"><datalist id="cl2">${clientList().map(c=>`<option value="${esc(c.name)}">`).join("")}</datalist><label class="f">Рақами</label><input class="fi" id="nd_p" type="tel"><label class="f">Сумма</label><input class="fi" id="nd_a" inputmode="decimal"><label class="f">Нима учун</label><input class="fi" id="nd_w" placeholder="масалан: экран алмаштириш"><div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn g" onclick="doNewDebt()">Сақлаш</button></div>`);setTimeout(()=>$("nd_n").focus(),50)}
+function doNewDebt(){const n=$("nd_n").value.trim(),a=num($("nd_a").value);if(!n||a<=0){toast("Исм ва суммани ёзинг");return}saveDebt({id:uid(),client:n,phone:$("nd_p").value.trim(),amount:a,paid:0,payments:[],date:today(),what:$("nd_w").value.trim()});closeM();toast("Сақланди ✓")}
+
+/* ---------- cash in/out ---------- */
+function vCash(){
+  const m=ym(new Date());const items=cashOf(m).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const inn=items.filter(x=>x.type==="in").reduce((a,x)=>a+num(x.amount),0),out=items.filter(x=>x.type==="out").reduce((a,x)=>a+num(x.amount),0);
+  return `<div class="kv"><div class="pn"><div class="k">Шу ой кирим</div><div class="v" style="color:var(--green)">${money(inn)}</div></div><div class="pn"><div class="k">Шу ой чиқим</div><div class="v" style="color:var(--red)">${money(out)}</div></div></div>
+  <section class="pn"><h2>${ic("swap")} Кирим-чиқим <small>${monthName(m)}</small><span class="r" style="display:flex;gap:8px"><button class="btn g sm" onclick="cashDlg('in')">+ Кирим</button><button class="btn r sm" onclick="cashDlg('out')">− Чиқим</button></span></h2>
+  <div class="mute" style="margin-bottom:8px">Чиқим: ижара, свет, товар олиб келиш йўл кира, овқат… Кирим: савдодан ташқари тушган пул. Чиқимлар ҳисоботда фойдадан айрилади.</div>
+  ${items.length?`<table><tr><th>Сана</th><th>Изоҳ</th><th class="n">Сумма</th><th></th></tr>${items.map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.note)}</td><td class="n" style="color:${x.type==="in"?"var(--green)":"var(--red)"}">${x.type==="in"?"+":"−"}${money(num(x.amount))}</td><td class="c"><button class="del" onclick="confirmDlg('Ўчирасизми?',()=>delCash('${m}','${x.id}'))">${ic("trash")}</button></td></tr>`).join("")}</table>`:`<div class="empty">Бу ойда ёзув йўқ</div>`}</section>`;
+}
+function cashDlg(type){openM(`<h2>${type==="in"?"Кирим":"Чиқим"}</h2><label class="f">Сумма</label><input class="fi" id="cs_a" inputmode="decimal"><label class="f">Изоҳ</label><input class="fi" id="cs_n" placeholder="${type==="in"?"масалан: эски телефон сотилди":"масалан: ижара, свет"}"><div class="mact"><button class="btn o" onclick="closeM()">Бекор</button><button class="btn ${type==="in"?"g":"r"}" onclick="doCash('${type}')">Сақлаш</button></div>`);setTimeout(()=>$("cs_a").focus(),50)}
+function doCash(type){const a=num($("cs_a").value);if(a<=0){toast("Суммани ёзинг");return}const m=ym(new Date());saveCash(m,[...cashOf(m),{id:uid(),date:today(),type,amount:a,note:$("cs_n").value.trim()}]);closeM();toast("Сақланди ✓")}
+function delCash(m,id){saveCash(m,cashOf(m).filter(x=>x.id!==id))}
+
+/* ---------- report ---------- */
+function vReport(){
+  const m=ui.rMonth,isCur=m===ym(new Date());const items=salesOf(m);
+  const rev=items.reduce((a,x)=>a+lineSum(x),0),cost=items.reduce((a,x)=>a+x.qty*x.cost,0);
+  const reps=Object.values(S.repairs).filter(r=>r.status===3&&String(r.givenAt||"").startsWith(m));
+  const rrev=reps.reduce((a,r)=>a+num(r.price),0),rcost=reps.reduce((a,r)=>a+num(r.parts),0);
+  const cs=cashOf(m);const cin=cs.filter(x=>x.type==="in").reduce((a,x)=>a+num(x.amount),0),cout=cs.filter(x=>x.type==="out").reduce((a,x)=>a+num(x.amount),0);
+  const net=rev-cost+rrev-rcost+cin-cout;
+  const byCat={};items.forEach(x=>{const c=byCat[x.cat]||(byCat[x.cat]={q:0,s:0,p:0});c.q+=x.qty;c.s+=lineSum(x);c.p+=x.qty*(x.price-x.cost)});
+  const byPay={};items.forEach(x=>{const k=x.pay||"Нақд";byPay[k]=(byPay[k]||0)+lineSum(x)});
+  const byP={};items.forEach(x=>{if(x.cat==="Чегирма")return;const c=byP[x.name]||(byP[x.name]={q:0,s:0});c.q+=x.qty;c.s+=lineSum(x)});
+  const top=Object.entries(byP).sort((a,b)=>b[1].q-a[1].q).slice(0,10);
+  return `<div class="pn" style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><button class="btn o" onclick="setRM('${prevMonth(m)}')">‹</button><div class="grow" style="text-align:center;font-size:20px;font-weight:600">${monthName(m)}</div><button class="btn o" onclick="setRM('${nextMonth(m)}')" ${isCur?"disabled style='opacity:.3'":""}>›</button></div>
+  <div class="kv"><div class="pn"><div class="k">Товар савдоси</div><div class="v">${money(rev)}</div></div><div class="pn"><div class="k">Товар фойдаси</div><div class="v">${money(rev-cost)}</div></div><div class="pn"><div class="k">Ремонт (${reps.length} та)</div><div class="v">${money(rrev)}</div></div><div class="pn"><div class="k">Ремонт фойдаси</div><div class="v">${money(rrev-rcost)}</div></div>
+  <div class="pn"><div class="k">Бошқа кирим</div><div class="v" style="color:var(--green)">${money(cin)}</div></div><div class="pn"><div class="k">Чиқимлар</div><div class="v" style="color:var(--red)">${money(cout)}</div></div><div class="pn" style="grid-column:span 2;background:linear-gradient(135deg,#0c7a3c,#075029);border-color:#3cf08a"><div class="k" style="color:#c9ffdd">СОФ ФОЙДА</div><div class="v" style="font-size:28px">${money(net)}</div></div></div>
+  <div class="g2"><section class="pn"><h2>Категория бўйича</h2>${Object.keys(byCat).length?`<table><tr><th>Тур</th><th class="n">Дона</th><th class="n">Савдо</th><th class="n">Фойда</th></tr>${Object.entries(byCat).sort((a,b)=>b[1].s-a[1].s).map(([c,v])=>`<tr><td>${esc(c)}</td><td class="n">${c==="Чегирма"?"":v.q}</td><td class="n">${money(v.s)}</td><td class="n">${money(v.p)}</td></tr>`).join("")}</table>`:`<div class="empty">Бу ойда савдо йўқ</div>`}
+   ${Object.keys(byPay).length?`<h2 style="margin-top:14px;font-size:16px">Тўлов тури бўйича</h2><table>${Object.entries(byPay).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="n">${money(v)}</td></tr>`).join("")}</table>`:""}</section>
+  <section class="pn top3"><h2>${ic("trophy")} Энг кўп сотилганлар</h2>${top.length?top.map(([n,v],i)=>`<div class="it"><span class="medal ${i<3?"m"+(i+1):"m4"}">${i+1}</span><span>${esc(n)}</span><b>${v.q} дона · ${money(v.s)}</b></div>`).join(""):`<div class="empty">—</div>`}</section></div>`;
+}
+function setRM(m){ui.rMonth=m;subReportMonth();render()}
+
+/* ---------- settings ---------- */
+function vSet(){
+  return `<div class="g2">${vSync()}<section class="pn"><h2>${ic("store")} Дўкон</h2>
+   <label class="f">Дўкон номи (логотипда чиқади)</label><input class="fi" id="st_shop" value="${esc(S.meta.shop||"SHOHK MOBILE")}">
+   <label class="f">Пул бирлиги</label><input class="fi" id="st_cur" value="${esc(cur())}">
+   <div class="mact"><button class="btn g" onclick="saveMeta({shop:$('st_shop').value.trim()||'SHOHK MOBILE',cur:$('st_cur').value.trim()||'сомоний'});toast('Сақланди ✓')">Сақлаш</button></div></section>
+  <section class="pn"><h2>${ic("grid")} Товар турлари</h2><div class="mute">Ўзингизга керак турни қўшинг (масалан: Флешка, Смарт соат, Пленка).</div>
+   <div class="chips" style="margin-top:10px">${CATS.map(c=>`<span class="chip">${esc(c)}${(S.meta.cats||[]).includes(c)?` <a href="#" style="color:#ff9aa5" onclick="saveMeta({cats:(S.meta.cats||[]).filter(x=>x!=='${c}')});return false">✕</a>`:""}</span>`).join("")}</div>
+   <div class="srch"><label><input id="st_newcat" placeholder="Янги тур номи"></label><button class="btn g" onclick="const v=$('st_newcat').value.trim();if(v&&!CATS.includes(v)){saveMeta({cats:[...(S.meta.cats||[]),v]});toast('Қўшилди ✓')}">Қўшиш</button></div></section>
+  <section class="pn" style="grid-column:1/-1"><h2>📷 Турлар расми</h2><div class="mute" style="margin-bottom:10px">Ҳар бир турга битта расм қўйсангиз (масалан, битта зарядка расми), шу турдаги расмсиз товарларнинг ҳаммасида шу расм чиқади. Товарнинг ўз расми бўлса, ўшаниси чиқади.</div>
+   <div class="catph">${CATS.map(c=>{const u=(S.meta.catImg||{})[c];return `<div><label class="pv upl">${u?`<img src="${esc(u)}">`:pic(c)}<input type="file" accept="image/*" onchange="pickCatImg('${c}',this)"></label>${esc(c)}${u?` <a href="#" style="color:#ff9aa5" onclick="const o={...(S.meta.catImg||{})};delete o['${c}'];saveMeta({catImg:o});return false">✕</a>`:""}</div>`}).join("")}</div></section>
+  <section class="pn"><h2>${ic("db")} Маълумотлар</h2><div class="mute">${mode==="local"?"📴 Ҳозир маълумотлар фақат шу қурилмада сақланмоқда.":"☁️ Маълумотлар интернетда сақланади — телефон ёки компьютер алмашса ҳам йўқолмайди. Саҳифани ёрдамчингиз билан бўлишсангиз, у ҳам касса қила олади."}</div>
+   <div class="mact"><button class="btn" onclick="backup()">📋 Захира нусха олиш</button><button class="btn o" onclick="restoreDlg()">♻️ Захирадан тиклаш</button></div><div class="mute" style="margin-top:8px">Нусхани Telegram'да ўзингизга юбориб қўйинг.</div></section></div>`;
+}
+function backup(){navigator.clipboard.writeText(JSON.stringify({products:S.products,repairs:S.repairs,debts:S.debts,days:S.days,cash:S.cash})).then(()=>toast("Нусхаланди"),()=>toast("Нусхалаб бўлмади"))}
+function helpDlg(){openM(`<h2>Ёрдам</h2><div style="line-height:1.6">
+ • <b>Касса:</b> товар расмига босинг → чекка тушади → тўлов турини танланг → «Сотишни тасдиқлаш».<br>
+ • <b>Омбор:</b> «Энг кам миқдор» дан кам қолса, товар қизил бўлади ва тепадаги қўнғироқчада чиқади.<br>
+ • <b>Ремонт:</b> қабул қилинг, ҳолатини ўзгартиринг. «Берилди» бўлганда пул ҳисоботга тушади.<br>
+ • <b>Қарзга:</b> кассада «Қарзга» танланса, «Қарзлар»га ўзи ёзилади.<br>
+ • <b>Компьютерда:</b> F9 — сотишни тасдиқлаш, сканер штрих-кодни қидирув қаторига ёзади.</div><div class="mact"><button class="btn" onclick="closeM()">Тушундим</button></div>`)}
+
+/* ---------- dialogs ---------- */
+function openM(html){$("sheet").innerHTML=html;$("modal").classList.add("open")}
+function closeM(){$("modal").classList.remove("open")}
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeM()});
+function confirmDlg(text,fn){window._cf=fn;openM(`<h2>Тасдиқлаш</h2><p>${esc(text)}</p><div class="mact"><button class="btn o" onclick="closeM()">Йўқ</button><button class="btn r" onclick="closeM();_cf()">Ҳа</button></div>`)}
+document.addEventListener("keydown",e=>{if(e.key==="F9"){e.preventDefault();if(!$("modal").classList.contains("open"))checkout()}if(e.key==="Escape")closeM()});
+
+init();
+</script>
+</body>
+</html>

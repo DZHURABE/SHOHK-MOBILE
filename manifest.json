@@ -1,0 +1,16 @@
+{
+  "name": "SHOHK MOBILE",
+  "short_name": "SHOHK",
+  "description": "Телефон ремонт • Аксессуары • Запчасти — дўкон ҳисоби",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#040a1c",
+  "theme_color": "#061131",
+  "lang": "uz",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
