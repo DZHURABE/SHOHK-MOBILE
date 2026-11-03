@@ -1,0 +1,144 @@
+name: EXE va APK yasash
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Windows EXE
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Electron loyihasini tayyorlash
+        shell: bash
+        run: |
+          mkdir -p desk
+          cp index.html icon-192.png icon-512.png desk/
+          cd desk
+          cat > package.json <<'EOF'
+          {
+            "name": "shohk-mobile",
+            "productName": "SHOHK MOBILE",
+            "version": "2.0.0",
+            "description": "SHOHK MOBILE - dokon hisobi",
+            "author": "SHOHK MOBILE",
+            "main": "main.js",
+            "build": {
+              "appId": "uz.shohk.mobile",
+              "productName": "SHOHK MOBILE",
+              "files": ["index.html", "main.js", "icon-192.png", "icon-512.png"],
+              "directories": { "output": "dist" },
+              "win": { "target": ["nsis", "portable"], "icon": "icon-512.png" },
+              "nsis": {
+                "oneClick": false,
+                "allowToChangeInstallationDirectory": true,
+                "createDesktopShortcut": true,
+                "createStartMenuShortcut": true,
+                "shortcutName": "SHOHK MOBILE",
+                "artifactName": "SHOHK-MOBILE-Setup.exe"
+              },
+              "portable": { "artifactName": "SHOHK-MOBILE-Portable.exe" }
+            }
+          }
+          EOF
+          cat > main.js <<'EOF'
+          const { app, BrowserWindow, Menu, shell } = require('electron');
+          const path = require('path');
+          app.setAppUserModelId('uz.shohk.mobile');
+          if (!app.requestSingleInstanceLock()) app.quit();
+          let win;
+          function create() {
+            win = new BrowserWindow({
+              width: 1400, height: 860, minWidth: 380, minHeight: 600,
+              backgroundColor: '#040a1c', title: 'SHOHK MOBILE',
+              icon: path.join(__dirname, 'icon-512.png'), autoHideMenuBar: true,
+              webPreferences: { contextIsolation: true }
+            });
+            Menu.setApplicationMenu(null);
+            win.maximize();
+            win.loadFile(path.join(__dirname, 'index.html'));
+            win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
+            win.webContents.on('before-input-event', (e, i) => {
+              if (i.key === 'F5') win.reload();
+              if (i.key === 'F11') win.setFullScreen(!win.isFullScreen());
+            });
+          }
+          app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
+          app.whenReady().then(create);
+          app.on('window-all-closed', () => app.quit());
+          EOF
+          npm install --save-dev electron@33 electron-builder@25
+      - name: EXE yasash
+        shell: bash
+        working-directory: desk
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder --win --x64 --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: desk/dist/*.exe
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Capacitor loyihasini tayyorlash
+        run: |
+          mkdir -p apk/www apk/assets
+          cp index.html manifest.json icon-192.png icon-512.png apk/www/
+          cp icon-512.png apk/assets/icon.png
+          cp icon-512.png apk/assets/splash.png
+          cd apk
+          npm init -y
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          npx cap init "SHOHK MOBILE" uz.shohk.mobile --web-dir www
+          npx cap add android
+          npx --yes @capacitor/assets@3 generate --android --iconBackgroundColor '#061131' --splashBackgroundColor '#040a1c' || echo "ikonka yasalmadi, oddiy ikonka qoladi"
+          npx cap sync android
+      - name: APK yasash
+        working-directory: apk/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../../SHOHK-MOBILE.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: SHOHK-MOBILE.apk
+
+  release:
+    name: Releases'ga qo'yish
+    needs: [windows, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v2.${{ github.run_number }}
+          name: SHOHK MOBILE v2.${{ github.run_number }}
+          body: |
+            **Компьютер:** SHOHK-MOBILE-Setup.exe — ўрнатиш дастури (иш столига ярлык қўяди). SHOHK-MOBILE-Portable.exe — ўрнатмасдан очилади.
+            **Телефон:** SHOHK-MOBILE.apk — Android'га ўрнатинг («Неизвестные источники»га рухсат беринг).
+            Интернетсиз ишлайди. Телефон ↔ компьютер синхрон бўлиши учун: Созламалар → Синхронлаш.
+          files: out/*
+          make_latest: true
